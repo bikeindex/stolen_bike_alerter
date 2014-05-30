@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140528181608) do
+ActiveRecord::Schema.define(version: 20140529185012) do
 
   create_table "tweets", force: true do |t|
     t.integer  "twitter_account_id"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20140528181608) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "tweets", ["twitter_account_id"], name: "index_tweets_on_twitter_account_id"
 
   create_table "twitter_accounts", force: true do |t|
     t.string   "screen_name"
