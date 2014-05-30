@@ -11,13 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140529185012) do
+ActiveRecord::Schema.define(version: 20140530154759) do
+
+  create_table "bikes", force: true do |t|
+    t.string   "bike_index_api_url"
+    t.text     "bike_index_api_response"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "tweets", force: true do |t|
     t.integer  "twitter_account_id"
     t.integer  "twitter_tweet_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "bike_id"
   end
 
   add_index "tweets", ["twitter_account_id"], name: "index_tweets_on_twitter_account_id"
