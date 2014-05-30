@@ -50,7 +50,8 @@ end
 
 group :develop, :test do
   gem 'rb-fsevent', '~> 0.9.1'
-  gem 'rspec-rails'
+  gem 'rspec-rails', :git => 'https://github.com/rspec/rspec-rails.git'
+  gem 'rspec', '~> 3.0.0.beta2'  # workaround from guard-rspec #236
   gem 'foreman'
   gem 'database_cleaner'
 end

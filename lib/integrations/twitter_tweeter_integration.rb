@@ -1,4 +1,3 @@
-
 class TwitterTweeterIntegration
   require 'twitter'
   
