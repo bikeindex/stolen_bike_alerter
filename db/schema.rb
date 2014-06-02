@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140530154759) do
+ActiveRecord::Schema.define(version: 20140602211509) do
 
   create_table "bikes", force: true do |t|
     t.string   "bike_index_api_url"
@@ -41,6 +41,9 @@ ActiveRecord::Schema.define(version: 20140530154759) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "address"
+    t.boolean  "default",         default: false
   end
+
+  add_index "twitter_accounts", ["latitude", "longitude"], name: "index_twitter_accounts_on_latitude_and_longitude"
 
 end

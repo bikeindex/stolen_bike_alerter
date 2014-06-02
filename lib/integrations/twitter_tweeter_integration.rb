@@ -5,7 +5,7 @@ class TwitterTweeterIntegration
 
   def initialize(bike)
     @bike = bike.bike_index_api_response[:bikes]
-    @close_twitters = TwitterAccount.near(@bike[:stolen_record])
+    @close_twitters = TwitterAccount.near(@bike[:stolen_record], 50) || TwitterAccount.where(default: true)
   end
 
   def create_tweet
@@ -25,7 +25,7 @@ class TwitterTweeterIntegration
       tweet = client.update(update_str, update_opts)
     end
 
-    retweet(tweet) if tweet
+    retweet(tweet) if tweet && @close_twitters
   end
 
   private
