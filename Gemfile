@@ -38,7 +38,10 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem "node"
+# Gems for my app
+gem 'node'
+gem 'twitter'
+gem 'geocoder'
 
 group :develop do
   gem 'growl'
