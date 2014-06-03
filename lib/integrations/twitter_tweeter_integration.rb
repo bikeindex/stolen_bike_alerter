@@ -2,6 +2,7 @@ class TwitterTweeterIntegration
   require 'twitter'
   require 'geocoder'
   require 'tempfile'
+  require 'open-uri'
 
   def initialize(bike)
     @bike = bike.bike_index_api_response[:bikes]
@@ -16,6 +17,7 @@ class TwitterTweeterIntegration
     new_tweet = nil
     if (@bike[:photo])
       Tempfile.open(['foto', '.jpg'], nil, 'wb+') do |foto|
+        foto.binmode
         foto.write open(@bike[:photo]).read
         foto.rewind
         new_tweet = client.update_with_media(update_str, foto, update_opts)
