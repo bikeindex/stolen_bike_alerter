@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140602211509) do
+ActiveRecord::Schema.define(version: 20140603192442) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "bikes", force: true do |t|
     t.string   "bike_index_api_url"
@@ -20,15 +23,23 @@ ActiveRecord::Schema.define(version: 20140602211509) do
     t.datetime "updated_at"
   end
 
+  create_table "retweets", force: true do |t|
+    t.integer  "twitter_account_id"
+    t.integer  "tweet_id"
+    t.integer  "twitter_tweet_id",   limit: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "tweets", force: true do |t|
     t.integer  "twitter_account_id"
-    t.integer  "twitter_tweet_id"
+    t.integer  "twitter_tweet_id",   limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "bike_id"
   end
 
-  add_index "tweets", ["twitter_account_id"], name: "index_tweets_on_twitter_account_id"
+  add_index "tweets", ["twitter_account_id"], name: "index_tweets_on_twitter_account_id", using: :btree
 
   create_table "twitter_accounts", force: true do |t|
     t.string   "screen_name"
@@ -44,6 +55,6 @@ ActiveRecord::Schema.define(version: 20140602211509) do
     t.boolean  "default",         default: false
   end
 
-  add_index "twitter_accounts", ["latitude", "longitude"], name: "index_twitter_accounts_on_latitude_and_longitude"
+  add_index "twitter_accounts", ["latitude", "longitude"], name: "index_twitter_accounts_on_latitude_and_longitude", using: :btree
 
 end

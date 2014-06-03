@@ -10,8 +10,10 @@ class BikesController < ApplicationController
       b.save
     end
     
-    TwitterTweeterIntegration.new(bike).create_tweet
+    new_tweet = TwitterTweeterIntegration.new(bike).create_tweet
+    BikeIndexEmailGenerator.send_email(new_tweet)
 
+    
     render :nothing => true
   end
 

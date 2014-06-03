@@ -17,3 +17,6 @@
 
 # Testing environment configuration
 .env*
+
+# Ignore the seeds for the Twitter Accounts, as it has sensitive info in it
+/db/seeds/twitter-accounts.rb

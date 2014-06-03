@@ -35,7 +35,7 @@ describe TwitterTweeterIntegration do
   end
 
   describe :create_tweet do
-    it "posts a text only tweet properly" do
+    xit "posts a text only tweet properly" do
       pp @bike_no_media.bike_index_api_response[:bikes][:stolen_record][:latitude]
       pp @bike_no_media.bike_index_api_response[:bikes][:stolen_record][:longitude]
       expect(TwitterTweeterIntegration.new(@bike_no_media).create_tweet).to be_an_instance_of(Twitter::Tweet)

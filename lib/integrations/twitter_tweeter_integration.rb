@@ -5,35 +5,42 @@ class TwitterTweeterIntegration
 
   def initialize(bike)
     @bike = bike.bike_index_api_response[:bikes]
-    @close_twitters = TwitterAccount.near(@bike[:stolen_record], 50) || TwitterAccount.where(default: true)
+    @close_twitters = TwitterAccount.near([@bike[:stolen_record][:latitude], @bike[:stolen_record][:longitude]], 50).presence || [ TwitterAccount.where(default: true) ]
   end
 
   def create_tweet
-    #close_twitters = TwitterAccount.near(bike.bike_index_api_response[:bikes][:stolen_record])
-    update_str = build_bike_status(@bike)
+    update_str = build_bike_status
     update_opts = { lat: @bike[:stolen_record][:latitude], long: @bike[:stolen_record][:longitude], display_coordinates: "true" }
-    client = twitter_client_start(@close_twitters.shift)
+    client = twitter_client_start(@close_twitters.first)
 
-    tweet = nil
+    new_tweet = nil
     if (@bike[:photo])
       Tempfile.open(['foto', '.jpg'], nil, 'wb+') do |foto|
         foto.write open(@bike[:photo]).read
         foto.rewind
-        tweet = client.update_with_media(update_str, foto, update_opts)
+        new_tweet = client.update_with_media(update_str, foto, update_opts)
       end
     else
-      tweet = client.update(update_str, update_opts)
+      new_tweet = client.update(update_str, update_opts)
     end
 
-    retweet(tweet) if tweet && @close_twitters
+    @tweet = Tweet.create(twitter_tweet_id: new_tweet.id, twitter_account_id: @close_twitters.first[:id], bike_id: Bike.where(bike_index_api_url: @bike[:api_url]).first[:id])
+
+    retweet if @close_twitters.size > 1
+    return @tweet
   end
 
   private
 
-  def retweet(tweet)
+  
+  def retweet
+    retweets = []
     @close_twitters.each do |twitter_name|
+      next if twitter_name.id == @tweet.twitter_account_id
       client = twitter_client_start(twitter_name)
-      client.retweet(tweet)
+      # retweet returns an array even with scalar parameters
+      rt_array = client.retweet(@tweet[:twitter_tweet_id])
+      retweets.push(Retweet.create(twitter_tweet_id: rt_array.first.id, twitter_account_id: twitter_name.id, bike_id: Bike.where(bike_index_api_url: @bike[:api_url]).first[:id], tweet_id: @tweet.id))
     end
   end
 
