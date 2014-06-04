@@ -42,6 +42,11 @@ gem 'spring',        group: :development
 gem 'node'
 gem 'twitter'
 gem 'geocoder'
+gem 'httparty'
+
+group :production do
+  'rails_12factor'
+end
 
 group :develop do
   gem 'growl'

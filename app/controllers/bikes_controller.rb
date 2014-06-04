@@ -1,5 +1,7 @@
 class BikesController < ApplicationController
-
+  require 'dotenv'
+  Dotenv.load
+  
   skip_before_action :verify_authenticity_token
 
   def create
@@ -20,6 +22,7 @@ class BikesController < ApplicationController
   private
   
   def bike_params
+    fail unless params.require(:key) == ENV['INCOMING_REQUEST_KEY']
     params.require(:api_url)
     params.permit(:api_url)
   end

@@ -1,7 +1,7 @@
 class Bike < ActiveRecord::Base
   # :bike_index_api_url, :bike_index_api_response
 
-  has_many :tweets
+  has_one :tweet
   validates_presence_of :bike_index_api_url
   serialize :bike_index_api_response
 
