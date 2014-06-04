@@ -41,8 +41,8 @@ class TwitterTweeterIntegration
       next if twitter_name.id == @tweet.twitter_account_id
       client = twitter_client_start(twitter_name)
       # retweet returns an array even with scalar parameters
-      rt_array = client.retweet(@tweet[:twitter_tweet_id])
-      retweets.push(Retweet.create(twitter_tweet_id: rt_array.first.id, twitter_account_id: twitter_name.id, bike_id: Bike.where(bike_index_api_url: @bike[:api_url]).first[:id], tweet_id: @tweet.id))
+      rt = client.retweet(@tweet[:twitter_tweet_id]).first
+      retweets.push(Retweet.create(twitter_tweet_id: rt.id, twitter_account_id: twitter_name.id, bike_id: @tweet.bike.id, tweet_id: @tweet.id))
     end
   end
 
