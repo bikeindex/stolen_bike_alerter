@@ -5,20 +5,20 @@ class TwitterTweeterIntegration
   require 'open-uri'
 
   def initialize(bike)
-    @bike = bike.bike_index_api_response[:bikes]
-    @close_twitters = TwitterAccount.near([@bike[:stolen_record][:latitude], @bike[:stolen_record][:longitude]], 50).presence || [ TwitterAccount.where(default: true) ]
+    @bike = bike
+    @close_twitters = TwitterAccount.near(@bike, 50).presence || [ TwitterAccount.where(default: true) ]
   end
 
   def create_tweet
     update_str = build_bike_status
-    update_opts = { lat: @bike[:stolen_record][:latitude], long: @bike[:stolen_record][:longitude], display_coordinates: "true" }
+    update_opts = { lat: @bike.bike_index_api_response[:stolen_record][:latitude], long: @bike.bike_index_api_response[:stolen_record][:longitude], display_coordinates: "true" }
     client = twitter_client_start(@close_twitters.first)
 
     new_tweet = nil
-    if (@bike[:photo])
+    if (@bike.bike_index_api_response[:photo])
       Tempfile.open(['foto', '.jpg'], nil, 'wb+') do |foto|
         foto.binmode
-        foto.write open(@bike[:photo]).read
+        foto.write open(@bike.bike_index_api_response[:photo]).read
         foto.rewind
         new_tweet = client.update_with_media(update_str, foto, update_opts)
       end
@@ -26,7 +26,7 @@ class TwitterTweeterIntegration
       new_tweet = client.update(update_str, update_opts)
     end
 
-    @tweet = Tweet.create(twitter_tweet_id: new_tweet.id, twitter_account_id: @close_twitters.first[:id], bike_id: Bike.where(bike_index_api_url: @bike[:api_url]).first[:id])
+    @tweet = Tweet.create(twitter_tweet_id: new_tweet.id, twitter_account_id: @close_twitters.first[:id], bike_id: Bike.where(bike_index_api_url: @bike.bike_index_api_response[:api_url]).first[:id])
 
     retweet if @close_twitters.size > 1
     return @tweet
@@ -59,29 +59,29 @@ class TwitterTweeterIntegration
     media_length = 23
     stolen_slug = "STOLEN -"
     max_char = tweet_length - https_length - stolen_slug.size - 3 # spaces between slugs
-    max_char -= @bike[:photo] ? media_length : 0
+    max_char -= @bike.bike_index_api_response[:photo] ? media_length : 0
 
-    neighborhood = "in " + Geocoder.search([@bike[:stolen_record][:latitude], @bike[:stolen_record][:longitude]]).first.neighborhood
+    location = @close_twitters.first.default ? "in #{@bike.city}, #{@bike.state}" : "in #{@bike.neighborhood}"
 
-    color = @bike[:frame_colors][0]
+    color = @bike.bike_index_api_response[:frame_colors][0]
     if color.start_with?("Silver")
       color.replace "Gray"
     elsif color.start_with?("Stickers")
       color.replace ''
     end
 
-    manufacturer = @bike[:manufacturer_name]
-    model = @bike[:frame_model]
+    manufacturer = @bike.bike_index_api_response[:manufacturer_name]
+    model = @bike.bike_index_api_response[:frame_model]
 
-    full_length = color.size + model.size + manufacturer.size + neighborhood.size + 3
+    full_length = color.size + model.size + manufacturer.size + location.size + 3
     if full_length <= max_char
-      bike_slug = "#{color} #{manufacturer} #{model} #{neighborhood}"
+      bike_slug = "#{color} #{manufacturer} #{model} #{location}"
     elsif full_length - color.size - 1 <= max_char
-      bike_slug = "#{manufacturer} #{model} #{neighborhood}"
+      bike_slug = "#{manufacturer} #{model} #{location}"
     elsif full_length - manufacturer.size - 1 <= max_char
-      bike_slug = "#{color} #{model} #{neighborhood}"
+      bike_slug = "#{color} #{model} #{location}"
     elsif full_length - model.size - 1 <= max_char
-      bike_slug = "#{color} #{manufacturer} #{neighborhood}"
+      bike_slug = "#{color} #{manufacturer} #{location}"
     elsif model.size + 2 <= max_char
       bike_slug = "a #{model}"
     elsif manufacturer.size + 2 <= max_char
@@ -92,7 +92,7 @@ class TwitterTweeterIntegration
       bike_slug = ""
     end
 
-    return "#{stolen_slug} #{bike_slug} #{@bike["url"]}"
+    return "#{stolen_slug} #{bike_slug} #{@bike.bike_index_api_response["url"]}"
   end
 
   def twitter_client_start(twitter_account)

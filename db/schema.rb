@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140604180725) do
+ActiveRecord::Schema.define(version: 20140605161108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,11 @@ ActiveRecord::Schema.define(version: 20140604180725) do
     t.text     "bike_index_api_response"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "city"
+    t.string   "state"
+    t.string   "neighborhood"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   create_table "retweets", force: true do |t|

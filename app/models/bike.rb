@@ -2,8 +2,21 @@ class Bike < ActiveRecord::Base
   # :bike_index_api_url, :bike_index_api_response
 
   has_one :tweet
+  has_many :retweets
   validates_presence_of :bike_index_api_url
+  validates_presence_of :bike_index_api_response
   serialize :bike_index_api_response
+  
+  before_validation :serialize_api_response
+  
+  reverse_geocoded_by :latitude, :longitude do |bike,results|
+    if geo = results.first
+      bike.city    = geo.city
+      bike.state   = geo.state_code
+      bike.neighborhood = geo.neighborhood
+    end
+  end
+  after_validation :reverse_geocode
 
   def serialize_api_response
     self.bike_index_api_response = ActiveSupport::HashWithIndifferentAccess.new(bike_index_api_response)
