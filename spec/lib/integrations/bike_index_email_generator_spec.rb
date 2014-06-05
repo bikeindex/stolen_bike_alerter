@@ -19,6 +19,8 @@ describe BikeIndexEmailGenerator do
 
     it "creates the proper sentence when there are retweets" do
       @tweet.bike_id = 23
+      email = BikeIndexEmailGenerator.new.create_email(@tweet)
+      expect(email[:body]).not_to match(/already/)
     end
   end
 end

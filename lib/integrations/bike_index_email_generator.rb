@@ -23,6 +23,7 @@ class BikeIndexEmailGenerator
   def send_email(tweet)
     email = create_email(tweet)
     params = { body: email.to_json, headers: { 'Content-Type' => 'application/json' } }
-    HTTParty.post('https://bikeindex.org/api/v1/bikes/send_notification_email', params)
+    response = HTTParty.post('https://bikeindex.org/api/v1/bikes/send_notification_email', params)
+    puts response.body
   end
 end

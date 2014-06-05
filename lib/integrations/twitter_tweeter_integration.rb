@@ -6,7 +6,8 @@ class TwitterTweeterIntegration
 
   def initialize(bike)
     @bike = bike
-    @close_twitters = TwitterAccount.near(@bike, 50).presence || [ TwitterAccount.where(default: true) ]
+    @close_twitters = TwitterAccount.near(@bike, 50)
+    @close_twitters << TwitterAccount.where(default: true).first
   end
 
   def create_tweet
