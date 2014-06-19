@@ -35,7 +35,7 @@ class TwitterTweeterIntegration
 
   private
 
-  
+
   def retweet
     retweets = []
     @close_twitters.each do |twitter_name|
@@ -54,7 +54,7 @@ class TwitterTweeterIntegration
   def build_bike_status
     # TODO store these constants in the database and update them once a day with a REST client.configuration call
     #max_char = @tweet_length - @https_length - at_screen_name.length - 3 # spaces between slugs
-    
+
     tweet_length = 140
     https_length = 23
     media_length = 23
@@ -62,7 +62,13 @@ class TwitterTweeterIntegration
     max_char = tweet_length - https_length - stolen_slug.size - 3 # spaces between slugs
     max_char -= @bike.bike_index_api_response[:photo] ? media_length : 0
 
-    location = @close_twitters.first.default ? "in #{@bike.city}, #{@bike.state}" : "in #{@bike.neighborhood}"
+    location = ""
+    if !@close_twitters.first.default && @bike.neighborhood.present
+      location = "in #{@bike.neighborhood}"
+    elsif @bike.city.present && @bike.state.present
+      location = "in #{@bike.city}, #{@bike.state}"
+    end
+    # location = @close_twitters.first.default ? "in #{@bike.city}, #{@bike.state}" : "in #{@bike.neighborhood}"
 
     color = @bike.bike_index_api_response[:frame_colors][0]
     if color.start_with?("Silver")
