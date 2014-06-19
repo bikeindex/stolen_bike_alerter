@@ -4,7 +4,7 @@ class BikeIndexEmailGenerator
   def create_email(tweet)
     rt_screen_names = []
     if tweet.retweets.present?
-      tweet.retweets.each { |retweet| rt_screen_names << retweet.twitter_account.screen_name }
+      tweet.retweets.each { |retweet| rt_screen_names << "@" + retweet.twitter_account.screen_name }
     else
       rt_screen_names = nil
     end
@@ -17,7 +17,7 @@ class BikeIndexEmailGenerator
     email[:access_token] = ENV['EMAIL_ACCESS_TOKEN']
 
     return email
-    # #{tweet.has_retweets ? "We already did from 
+    # #{tweet.has_retweets ? "We already did from
   end
 
   def send_email(tweet)
