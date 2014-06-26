@@ -48,7 +48,7 @@ group :production do
   'rails_12factor'
 end
 
-group :develop do
+group :development do
   gem 'growl'
   gem 'brakeman'
   gem 'guard'
@@ -56,7 +56,7 @@ group :develop do
   gem 'guard-livereload'
 end
 
-group :develop, :test do
+group :development, :test do
   gem 'rb-fsevent', '~> 0.9.1'
   gem 'rspec-rails', :git => 'https://github.com/rspec/rspec-rails.git'
   gem 'rspec', '~> 3.0.0.beta2'  # workaround from guard-rspec #236
@@ -68,4 +68,3 @@ group :test do
   gem 'factory_girl_rails'
   gem 'shoulda-matchers'
 end
-
