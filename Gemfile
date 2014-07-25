@@ -45,7 +45,7 @@ gem 'geocoder'
 gem 'httparty'
 
 group :production do
-  'rails_12factor'
+  gem 'rails_12factor'
 end
 
 group :development do
