@@ -1,6 +1,5 @@
-class BikesController < ApplicationController 
-  require 'dotenv'
-  Dotenv.load
+class BikesController < ApplicationController
+#  Dotenv.load
   skip_before_filter  :verify_authenticity_token
   before_filter :verify_key
   respond_to :json
@@ -9,7 +8,7 @@ class BikesController < ApplicationController
     api_url = params[:api_url]
     bike_index_api_response = bike_index_response(api_url)
     bike = Bike.create(bike_index_api_url: api_url, bike_index_api_response: bike_index_api_response, latitude: bike_index_api_response['stolen_record']['latitude'],  longitude: bike_index_api_response['stolen_record']['longitude'])
-    
+
     new_tweet = TwitterTweeterIntegration.new(bike).create_tweet
     BikeIndexEmailGenerator.new.send_email(new_tweet)
 
@@ -23,7 +22,7 @@ class BikesController < ApplicationController
   end
 
   private
-  
+
   def verify_key
     unless params[:key].present? && params[:key] == ENV['INCOMING_REQUEST_KEY']
       render json: "Not authorized", status: :unauthorized and return
@@ -37,7 +36,7 @@ end
 # class BikesController < ApplicationController
 #   require 'dotenv'
 #   Dotenv.load
-  
+
 #   skip_before_action :verify_authenticity_token
 
 #   def create
@@ -47,16 +46,16 @@ end
 #       b.serialize_api_response
 #       b.save
 #     end
-    
+
 #     new_tweet = TwitterTweeterIntegration.new(bike).create_tweet
 #     BikeIndexEmailGenerator.new.send_email(new_tweet)
 
-    
+
 #     render :nothing => true
 #   end
 
 #   private
-  
+
 #   def bike_params
 #     fail unless params.require(:key) == ENV['INCOMING_REQUEST_KEY']
 #     params.require(:api_url)
