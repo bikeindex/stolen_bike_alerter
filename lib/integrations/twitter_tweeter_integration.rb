@@ -12,7 +12,10 @@ class TwitterTweeterIntegration
 
   def create_tweet
     update_str = build_bike_status
-    update_opts = { lat: @bike.bike_index_api_response[:stolen_record][:latitude], long: @bike.bike_index_api_response[:stolen_record][:longitude], display_coordinates: "true" }
+    update_opts = {
+      lat: @bike.bike_index_api_response[:stolen_record][:latitude],
+      long: @bike.bike_index_api_response[:stolen_record][:longitude],
+      display_coordinates: "true" }
     client = twitter_client_start(@close_twitters.first)
 
     new_tweet = nil
@@ -27,7 +30,11 @@ class TwitterTweeterIntegration
       new_tweet = client.update(update_str, update_opts)
     end
 
-    @tweet = Tweet.create(twitter_tweet_id: new_tweet.id, twitter_account_id: @close_twitters.first[:id], bike_id: Bike.where(bike_index_api_url: @bike.bike_index_api_response[:api_url]).first[:id])
+    @tweet = Tweet.create(twitter_tweet_id: new_tweet.id,
+      twitter_account_id: @close_twitters.first[:id],
+      bike_id: Bike.where(bike_index_api_url: @bike.bike_index_api_response[:api_url]).first[:id],
+      tweet_string: update_opts
+      )
 
     retweet if @close_twitters.size > 1
     return @tweet
