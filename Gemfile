@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.1'
 # Use postgresql as the database for Active Record
@@ -57,6 +56,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'rb-fsevent', '~> 0.9.1'
   gem 'rspec-rails', :git => 'https://github.com/rspec/rspec-rails.git'
   gem 'rspec', '~> 3.0.0.beta2'  # workaround from guard-rspec #236
