@@ -32,8 +32,8 @@ class TwitterTweeterIntegration
 
     @tweet = Tweet.create(twitter_tweet_id: new_tweet.id,
       twitter_account_id: @close_twitters.first[:id],
-      bike_id: Bike.where(bike_index_api_url: @bike.bike_index_api_response[:api_url]).first[:id],
-      tweet_string: update_opts
+      bike_id: bike.id,
+      tweet_string: update_str
       )
 
     retweet if @close_twitters.size > 1
