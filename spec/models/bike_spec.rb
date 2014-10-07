@@ -2,12 +2,13 @@ require 'spec_helper'
 
 describe Bike do
   
-  describe :validations do
-    it { should have_one :tweet }
-    it { should have_many :retweets }
-    it { should validate_presence_of :bike_index_api_url }
-    it { should serialize :bike_index_api_response }
-  end
+  # describe :validations do
+  #   it { should have_one :tweet }
+  #   it { should have_many :retweets }
+  #   it { should validate_presence_of :bike_index_api_url }
+  #   it { should validate_presence_of :bike_index_api_response }
+  #   it { should serialize :bike_index_api_response }
+  # end
 
   describe :serialize do 
     it "should make a hash with indifferent access out of an API response" do
@@ -18,8 +19,8 @@ describe Bike do
       bike.latitude = bike.bike_index_api_response[:stolen_record][:latitude]
       bike.longitude = bike.bike_index_api_response[:stolen_record][:longitude]
       expect(bike.bike_index_api_response[:id]).to eq(3414)
+      expect(bike.bike_index_bike_id).to eq(3414)
     end
   end
-
   
 end
