@@ -42,6 +42,7 @@ gem 'node'
 gem 'twitter'
 gem 'geocoder'
 gem 'httparty'
+gem 'honeybadger'
 
 group :production do
   gem 'rails_12factor'

@@ -17,6 +17,7 @@ class Tweet < ActiveRecord::Base
 
   def create_bike_index_post_hash
     p_hash = {
+      notification_type: 'stolen_twitter_alerter',
       bike_id: bike.reload.bike_index_bike_id,
       tweet_id: twitter_tweet_id,
       tweet_string: tweet_string,
@@ -25,6 +26,9 @@ class Tweet < ActiveRecord::Base
       tweet_account_image: twitter_account.account_info_image,
       retweet_screennames: []
     }
+    unless twitter_account.is_national
+      p_hash[:location] = twitter_account.address.split(',')[0].strip
+    end
     if retweets.present?
       t.retweets.each { |retweet| p_hash[:retweet_screennames] << r.twitter_account.screen_name }
     end

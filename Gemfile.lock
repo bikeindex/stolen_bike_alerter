@@ -109,6 +109,8 @@ GEM
       tilt
     highline (1.6.21)
     hike (1.2.3)
+    honeybadger (1.16.5)
+      json
     http (0.6.1)
       http_parser.rb (~> 0.6.0)
     http_parser.rb (0.6.0)
@@ -264,6 +266,7 @@ DEPENDENCIES
   guard
   guard-livereload
   guard-rspec
+  honeybadger
   httparty
   jbuilder (~> 2.0)
   jquery-rails
