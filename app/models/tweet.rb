@@ -24,10 +24,10 @@ class Tweet < ActiveRecord::Base
       tweet_account_screen_name: twitter_account.screen_name,
       tweet_account_name: twitter_account.account_info_name,
       tweet_account_image: twitter_account.account_info_image,
-      retweet_screennames: []
+      retweet_screen_names: []
     }
     unless twitter_account.is_national
-      p_hash[:location] = twitter_account.address.split(',')[0].strip
+      p_hash[:location] = twitter_account.address.split(',')[0].strip if twitter_account.address.present?
     end
     if retweets.present?
       retweets.each { |retweet| p_hash[:retweet_screennames] << retweet.twitter_account.screen_name }

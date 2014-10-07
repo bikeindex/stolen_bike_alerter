@@ -43,9 +43,8 @@ describe Tweet do
       expect(p_hash[:tweet_account_screen_name]).to match('bikeicorn')
       expect(p_hash[:tweet_account_image]).to be_present
       expect(p_hash[:tweet_account_name]).to match('bikeicorn')
-      expect(p_hash[:retweet_screennames]).to eq([])
+      expect(p_hash[:retweet_screen_names]).to eq([])
     end
   end
 
-  
 end

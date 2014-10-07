@@ -1,6 +1,7 @@
 desc "Get account info"
 task :get_account_info => :environment do
-  TwitterAccount.each do |twitter_account|
+  TwitterAccount.all.each do |twitter_account|
+    # These are broken/missing: [28, 33, 34]
     twitter_account.get_account_info
     twitter_account.save
   end
