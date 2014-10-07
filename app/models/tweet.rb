@@ -30,7 +30,7 @@ class Tweet < ActiveRecord::Base
       p_hash[:location] = twitter_account.address.split(',')[0].strip if twitter_account.address.present?
     end
     if retweets.present?
-      retweets.each { |retweet| p_hash[:retweet_screennames] << retweet.twitter_account.screen_name }
+      retweets.each { |retweet| p_hash[:retweet_screen_names] << retweet.twitter_account.screen_name }
     end
     self.bike_index_post_hash = p_hash
   end
