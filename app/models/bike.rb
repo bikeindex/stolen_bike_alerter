@@ -21,8 +21,9 @@ class Bike < ActiveRecord::Base
   after_validation :reverse_geocode
 
   def serialize_api_response
-    self.bike_index_api_response = ActiveSupport::HashWithIndifferentAccess.new(bike_index_api_response)
-    self.bike_index_bike_id = bike_index_api_response[:id]
+    indifferent = ActiveSupport::HashWithIndifferentAccess.new(bike_index_api_response)
+    self.bike_index_api_response = indifferent
+    self.bike_index_bike_id = indifferent[:id]
   end
 
 end
