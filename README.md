@@ -6,7 +6,7 @@ email back to BikeIndex to tell the bike owner what happened and to retweet.
 
 ## How to add a new twitter account to the app
 
-1. Create the new account on twitter -- it has to have a unique email.
+1. Create the new account on twitter -- it has to have a unique email. Write the email and the password in the Google Doc.
 
 2. While signed in to your new account, create a twitter app at apps.twitter.com. It should probably be called stolenbikesXXX if you want to keep with our naming theme.
 
