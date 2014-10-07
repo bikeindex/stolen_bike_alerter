@@ -32,7 +32,7 @@ class TwitterTweeterIntegration
 
     @tweet = Tweet.create(twitter_tweet_id: new_tweet.id,
       twitter_account_id: @close_twitters.first[:id],
-      bike_id: bike.id,
+      bike_id: @bike.id,
       tweet_string: update_str
       )
 
