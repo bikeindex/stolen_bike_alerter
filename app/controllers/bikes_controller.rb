@@ -1,5 +1,6 @@
 class BikesController < ApplicationController
   skip_before_filter  :verify_authenticity_token
+  skip_before_filter  :ensure_authorized_user
   before_filter :verify_key
   respond_to :json
 

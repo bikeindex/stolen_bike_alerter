@@ -4,10 +4,23 @@ class TwitterAccount < ActiveRecord::Base
   #              screen_name, twitter_account_info, language
 
   has_many :tweets
+  has_one :user
   serialize :twitter_account_info
 
   geocoded_by :address
-  after_validation :geocode
+  before_save :geocode, if: lambda {
+    self.address.present? && (latitude.blank? || self.address_changed?)
+  }
+
+  def self.create_from_twitter_oauth(info)
+    self.create({screen_name: info['info']['nickname'],
+      address: info['info']['location'],
+      consumer_key: ENV['OMNIAUTH_CONSUMER_KEY'],
+      consumer_secret: ENV['OMNIAUTH_CONSUMER_SECRET'],
+      user_token: info['credentials']['token'],
+      user_secret: info['credentials']['secret']
+    })
+  end
 
   def twitter_account_url
     "https://twitter.com/#{screen_name}"
@@ -36,6 +49,15 @@ class TwitterAccount < ActiveRecord::Base
   def account_info_image
     return nil unless twitter_account_info.present?
     twitter_account_info[:profile_image_url_https]
+  end
+
+  def self.fuzzy_screenname_find(n)
+    if !n.blank?
+      self.where("lower(screen_name) = ?", n.downcase.strip).first
+    else
+      nil
+    end
+    
   end
 
 end

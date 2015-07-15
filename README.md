@@ -1,10 +1,14 @@
 ## stolen_bike_alerter
 
+[![Code Climate](https://codeclimate.com/github/adherr/stolen_bike_alerter/badges/gpa.svg)](https://codeclimate.com/github/adherr/stolen_bike_alerter)
+
 Takes api_url POSTed to it and creates a media tweet in the
 stolenbikecity twitter account where the bike was stolen. Sends an
 email back to BikeIndex to tell the bike owner what happened and to retweet.
 
 ## How to add a new twitter account to the app
+
+**OLD SCHOOL** - now just go to the webpage and authenticate with twitter, then input your info and you're good.
 
 1. Create the new account on twitter -- it has to have a unique email. Write the email and the password in the Google Doc.
 

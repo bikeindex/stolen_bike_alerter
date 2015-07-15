@@ -1,10 +1,11 @@
 require 'spec_helper'
 
 describe TwitterAccount do
-  # it { should have_many :tweets }
-  # it { should serialize :twitter_account_info }
+  it { should have_many :tweets }
+  it { should have_one  :user }
+  it { should serialize :twitter_account_info }
 
-  xit "should geocode madison square gardens correctly without hitting API" do
+  it "should geocode madison square gardens correctly without hitting API" do
     twitter_account = TwitterAccount.new
     # madison square gardens is set up in a test fixture and geocoder testing
     # is following http://davidtuite.com/posts/how-to-test-the-ruby-geocoder-gem

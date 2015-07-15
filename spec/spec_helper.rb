@@ -39,18 +39,22 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
-  # RSpec Rails can automatically mix in different behaviours to your tests
-  # based on their file location, for example enabling you to call `get` and
-  # `post` in specs under `spec/controllers`.
-  #
-  # You can disable this behaviour by removing the line below, and instead
-  # explictly tag your specs with their type, e.g.:
-  #
-  #     describe UsersController, :type => :controller do
-  #       # ...
-  #     end
-  #
-  # The different available types are documented in the features, such as in
-  # https://relishapp.com/rspec/rspec-rails/v/3-0/docs
   config.infer_spec_type_from_file_location!
+  config.include Devise::TestHelpers, type: :controller
+end
+
+def omniauth_twitter_fixture
+  JSON.parse(File.read(Rails.root.join("spec/fixtures/omniauth_twitter_response.json")))
+end
+
+def user_from_twitter_fixture
+  fixture = omniauth_twitter_fixture
+  User.from_omniauth(fixture['uid'], fixture)
+end
+
+def set_omniauth_twitter(auth_hash=omniauth_twitter_fixture)
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.add_mock(:twitter, omniauth_twitter_fixture)
+  @request.env["devise.mapping"] = Devise.mappings[:user]
+  @request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:twitter]
 end

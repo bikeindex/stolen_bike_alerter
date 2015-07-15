@@ -1,0 +1,46 @@
+class User < ActiveRecord::Base
+  devise :database_authenticatable, :rememberable,
+         :trackable, :omniauthable, :omniauth_providers => [:twitter]
+
+  belongs_to :twitter_account
+
+  def self.from_omniauth(uid, auth)
+    where(twitter_uid: uid).first_or_create do |user|
+      user.twitter_info = auth.to_h
+      user.password = Devise.friendly_token[0,20]
+    end
+  end
+
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      raise StandardError
+      if data = session["devise.bike_index_email"] && session["devise.bike_index_data"]["extra"]["raw_info"]
+        user.email = data["email"] if user.email.blank?
+      end
+    end
+  end
+
+  def screenname
+    twitter_info['info']['nickname']
+  end
+
+  def twitter_credentials
+    (twitter_info['credentials'] || {}).with_indifferent_access
+  end
+
+  def update_twitter_info(info=twitter_info)
+    new_info = info.to_h
+    self.update_attribute :twitter_info, new_info unless twitter_info == new_info
+    account = find_or_create_associated_twitter_account
+    self.update_attribute :twitter_account_id, account.id unless account.id == twitter_account_id
+  end
+
+  def find_or_create_associated_twitter_account    
+    return account_by_screen_name if account_by_screen_name.present?
+    TwitterAccount.create_from_twitter_oauth(twitter_info)
+  end
+
+  def account_by_screen_name
+    @account_by_screen_name ||= TwitterAccount.fuzzy_screenname_find(screenname)
+  end
+end
