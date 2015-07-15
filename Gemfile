@@ -23,6 +23,7 @@ gem 'haml'
 
 gem 'devise-bootstrap-views'
 gem 'devise'
+gem 'omniauth'
 gem 'omniauth-twitter'
 
 gem 'node'

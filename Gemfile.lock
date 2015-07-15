@@ -287,6 +287,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   node
+  omniauth
   omniauth-twitter
   pg
   rails (= 4.1.11)

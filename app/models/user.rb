@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  devise :database_authenticatable, :rememberable,
+  devise :database_authenticatable, :registerable, :rememberable,
          :trackable, :omniauthable, :omniauth_providers => [:twitter]
 
   belongs_to :twitter_account

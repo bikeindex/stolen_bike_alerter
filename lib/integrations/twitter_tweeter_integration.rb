@@ -70,7 +70,7 @@ class TwitterTweeterIntegration
     max_char -= @bike.bike_index_api_response[:photo] ? media_length : 0
 
     location = ""
-    if !@close_twitters.first.default && @bike.neighborhood.present?
+    if !(@close_twitters.first && @close_twitters.first.default) && @bike.neighborhood.present?
       location = "in #{@bike.neighborhood}"
     elsif @bike.city.present? && @bike.state.present?
       location = "in #{@bike.city}, #{@bike.state}"

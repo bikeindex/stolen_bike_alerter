@@ -10,11 +10,9 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_authorized_user
-    if current_user.present?
-      verify_authorization
-    else
+    unless current_user.present?
       session[:sandr] ||= request.url unless controller_name.match('session')
-      redirect_to user_omniauth_authorize_path(:twitter) and return 
+      redirect_to user_omniauth_authorize_path(:twitter) and return
     end
   end
 

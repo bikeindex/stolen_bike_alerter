@@ -6,6 +6,10 @@ Takes api_url POSTed to it and creates a media tweet in the
 stolenbikecity twitter account where the bike was stolen. Sends an
 email back to BikeIndex to tell the bike owner what happened and to retweet.
 
+## Set up
+
+To get this to work locally you'll have to [create an app on Twitter](https://apps.twitter.com/app/new) and add environmental variables `OMNIAUTH_CONSUMER_KEY` and `OMNIAUTH_CONSUMER_SECRET`.
+
 ## How to add a new twitter account to the app
 
 **OLD SCHOOL** - now just go to the webpage and authenticate with twitter, then input your info and you're good.
