@@ -15,12 +15,14 @@ describe BikesController do
     context "with an :api_url" do
       it "should return success" do
         allow_any_instance_of(BikesController).to receive(:verify_key)
+        expect_any_instance_of(TwitterTweeterIntegration).to receive(:create_tweet)
+        expect_any_instance_of(BikeIndexEmailGenerator).to receive(:send_email_hash)
         options = { api_url: "https://bikeindex.org/api/v1/bikes/3414" }
         post :create, options, format: :json
         expect(response).to be_success
       end
+
       xit "should create a tweet on the appropriate twitter" do
-        
       end
     end
   end

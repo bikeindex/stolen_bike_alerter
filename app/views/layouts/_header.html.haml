@@ -13,7 +13,7 @@
       - if current_user.present?
         %p.navbar-text.navbar-right
           Signed in as
-          = link_to "@#{current_user.screenname}", current_user.twitter_url, class: "navbar-link"
+          = link_to "@#{current_user.screen_name}", current_user.twitter_url, class: "navbar-link"
           \|
           %small
             = link_to "Sign out", destroy_user_session_path, method: :delete, class: "navbar-link"

@@ -11,11 +11,11 @@ describe User do
     end
   end
 
-  describe :screenname do 
-    it "Twitter screenname" do 
+  describe :screen_name do 
+    it "Twitter screen_name" do 
       user = User.new
       user.twitter_info = omniauth_twitter_fixture
-      expect(user.screenname).to eq('johnqpublic')
+      expect(user.screen_name).to eq('johnqpublic')
     end
   end
 
@@ -24,7 +24,7 @@ describe User do
       user = User.new
       user.twitter_info = omniauth_twitter_fixture
       twitter_account = TwitterAccount.new(screen_name: 'johnqpublic')
-      expect(TwitterAccount).to receive(:fuzzy_screenname_find).with('johnqpublic').
+      expect(TwitterAccount).to receive(:fuzzy_screen_name_find).with('johnqpublic').
         and_return(twitter_account)
       account = user.find_or_create_associated_twitter_account
       expect(account).to eq(twitter_account)
@@ -33,7 +33,7 @@ describe User do
     it "creates the twitter account if one doesn't exist" do
       fixture = omniauth_twitter_fixture
       user = User.from_omniauth(fixture['uid'], fixture)
-      expect(user.screenname).to eq('johnqpublic')
+      expect(user.screen_name).to eq('johnqpublic')
       expect(user.twitter_account).to be_blank
       account = user.find_or_create_associated_twitter_account
       expect(account.id).to be_present
@@ -41,7 +41,6 @@ describe User do
       expect(account.consumer_secret).to be_present
       expect(account.user_token).to be_present
       expect(account.user_secret).to be_present
-      expect(account.latitude).to be_blank
     end
   end
 
@@ -50,7 +49,7 @@ describe User do
       fixture = omniauth_twitter_fixture
       fixture['info']['location'] = ' '
       user = User.from_omniauth(fixture['uid'], fixture)
-      expect(user.screenname).to eq('johnqpublic')
+      expect(user.screen_name).to eq('johnqpublic')
       expect(user.twitter_account).to be_blank
       user.update_twitter_info
       expect(user.twitter_account_id).to be_present
@@ -58,7 +57,6 @@ describe User do
       expect(user.twitter_account.consumer_secret).to be_present
       expect(user.twitter_account.user_token).to be_present
       expect(user.twitter_account.user_secret).to be_present
-      expect(user.twitter_account.latitude).to be_blank
       expect(user.twitter_account.address).to be_blank
     end
   end

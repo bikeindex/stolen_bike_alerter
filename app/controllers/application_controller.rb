@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource_or_scope)
-    session[:sandr].present? ? session.delete(:sandr) : account_index_url
+    session[:sandr].present? ? session.delete(:sandr) : twitter_account_url('twitters')
   end
 
 end

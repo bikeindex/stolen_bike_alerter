@@ -1,9 +1,0 @@
-.panel.panel-default
-  .panel-heading
-    .panel-title
-      @#{@account.screenname} regional tweet settings
-  .panel-body
-    = form_tag('account', url: account_url(@account), method: :put) do
-      .form-group
-        = label_tag :account, :email
-        = text_field_tag :account, :email, class: "form-control"

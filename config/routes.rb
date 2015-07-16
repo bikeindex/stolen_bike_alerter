@@ -4,6 +4,6 @@ Rails.application.routes.draw do
 
   root 'welcome#index'
 
-  resources :account, only: [:index, :update, :destroy]
+  resources :twitter_accounts, only: [:show, :update, :destroy]
 
 end

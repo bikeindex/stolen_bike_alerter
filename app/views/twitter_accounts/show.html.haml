@@ -1,0 +1,54 @@
+.panel.panel-default
+  .panel-heading
+    .panel-title
+      %strong
+        @#{@account.user.screen_name} 
+      regional tweet settings
+  .panel-body
+    = form_for(@account) do |f|
+      .row
+        .col-xs-6
+          .form-group
+            = f.label :address
+            = f.text_field :address, class: "form-control"
+        / .col-xs-6
+        /   .form-group
+        /     = f.label :language
+        /     = f.text_field :language, @account.language, class: "form-control"
+      .row
+        .col-xs-6
+          .form-group
+            %label{for: 'latitude'}
+              Latitude
+              %small
+                probably don't edit this
+            = f.text_field :latitude, class: "form-control"
+        .col-xs-6
+          .form-group
+            %label{for: 'longitude'}
+              Longitude
+              %small
+                probably don't edit this
+            = f.text_field :longitude, class: "form-control"
+
+      .form-group
+        = f.label :append_block, "Additional content to add to tweets"
+        = f.text_field :append_block, class: "form-control", placeholder: "A tag, a note, an emoji..."
+      .row
+        .col-xs-6
+          .checkbox
+            %label
+              = f.check_box :is_active
+              Account is active
+              %small
+                if un-checked, this account will not send out tweets
+        - if @account.is_national
+          .col-xs-6
+            .checkbox.disabled
+              %label
+                = f.check_box :is_national, {disabled: true}
+                Account is national
+      .form-group
+        = f.submit "Submit", class: 'btn btn-primary'
+
+

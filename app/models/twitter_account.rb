@@ -3,6 +3,7 @@ class TwitterAccount < ActiveRecord::Base
   #              consumer_key, consumer_secret, user_token, user_secret
   #              screen_name, twitter_account_info, language
 
+  scope :active, -> { where(is_active: true) }
   has_many :tweets
   has_one :user
   serialize :twitter_account_info
@@ -51,7 +52,7 @@ class TwitterAccount < ActiveRecord::Base
     twitter_account_info[:profile_image_url_https]
   end
 
-  def self.fuzzy_screenname_find(n)
+  def self.fuzzy_screen_name_find(n)
     if !n.blank?
       self.where("lower(screen_name) = ?", n.downcase.strip).first
     else

@@ -6,9 +6,11 @@ class TwitterTweeterIntegration
 
   def initialize(bike)
     @bike = bike
-    @close_twitters = TwitterAccount.near(@bike, 50)
-    @close_twitters << TwitterAccount.where(default: true).first
+    @close_twitters = TwitterAccount.active.near(@bike, 50)
+    @close_twitters << TwitterAccount.active.where(default: true).first
   end
+
+  attr_accessor :max_char, :close_twitters
 
   def create_tweet
     update_str = build_bike_status
@@ -54,21 +56,41 @@ class TwitterTweeterIntegration
     end
   end
 
-  # Perform the conditional text processing to create a reply string
-  # that fits twitter's limits
-  #
-  # @param bike [Hash] bike hash as delivered by BikeIndex that we're going to tweet about
-  def build_bike_status
+  def stolen_slug
+    "STOLEN -"
+  end
+
+  def set_max_char
     # TODO store these constants in the database and update them once a day with a REST client.configuration call
     #max_char = @tweet_length - @https_length - at_screen_name.length - 3 # spaces between slugs
 
     tweet_length = 140
     https_length = 23
     media_length = 23
-    stolen_slug = "STOLEN -"
-    max_char = tweet_length - https_length - stolen_slug.size - 3 # spaces between slugs
-    max_char -= @bike.bike_index_api_response[:photo] ? media_length : 0
+    
+    @max_char = tweet_length - https_length - stolen_slug.size - 3 # spaces between slugs
+    @max_char -= @bike.bike_index_api_response[:photo] ? media_length : 0
+  end
 
+  def tweet_string(stolen_slug, bike_slug, url)
+    "#{stolen_slug} #{bike_slug} #{url}"
+  end
+
+  def tweet_string_with_options(stolen_slug, bike_slug, url)
+    ts = tweet_string(stolen_slug, bike_slug, url)
+    if @close_twitters && @close_twitters.first.present? && @close_twitters.first.append_block.present?
+      block = @close_twitters.first.append_block
+      ts << " #{block}" if (ts.length + block.length) < @max_char
+    end
+    ts
+  end
+
+  # Perform the conditional text processing to create a reply string
+  # that fits twitter's limits
+  #
+  # @param bike [Hash] bike hash as delivered by BikeIndex that we're going to tweet about
+  def build_bike_status
+    set_max_char
     location = ""
     if !(@close_twitters.first && @close_twitters.first.default) && @bike.neighborhood.present?
       location = "in #{@bike.neighborhood}"
@@ -88,25 +110,25 @@ class TwitterTweeterIntegration
     model = @bike.bike_index_api_response[:frame_model]
 
     full_length = color.size + model.size + manufacturer.size + location.size + 3
-    if full_length <= max_char
+    if full_length <= @max_char
       bike_slug = "#{color} #{manufacturer} #{model} #{location}"
-    elsif full_length - color.size - 1 <= max_char
+    elsif full_length - color.size - 1 <= @max_char
       bike_slug = "#{manufacturer} #{model} #{location}"
-    elsif full_length - manufacturer.size - 1 <= max_char
+    elsif full_length - manufacturer.size - 1 <= @max_char
       bike_slug = "#{color} #{model} #{location}"
-    elsif full_length - model.size - 1 <= max_char
+    elsif full_length - model.size - 1 <= @max_char
       bike_slug = "#{color} #{manufacturer} #{location}"
-    elsif model.size + 2 <= max_char
+    elsif model.size + 2 <= @max_char
       bike_slug = "a #{model}"
-    elsif manufacturer.size + 2 <= max_char
+    elsif manufacturer.size + 2 <= @max_char
       bike_slug = "a #{manufacturer}"
-    elsif color.size + 5 <= max_char
+    elsif color.size + 5 <= @max_char
       bike_slug = "#{color} bike"
     else
       bike_slug = ""
     end
 
-    return "#{stolen_slug} #{bike_slug} #{@bike.bike_index_api_response["url"]}"
+    tweet_string_with_options(stolen_slug, bike_slug, @bike.bike_index_api_response["url"])
   end
 
   def twitter_client_start(twitter_account)

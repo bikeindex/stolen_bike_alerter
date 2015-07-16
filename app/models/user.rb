@@ -20,12 +20,12 @@ class User < ActiveRecord::Base
     end
   end
 
-  def screenname
+  def screen_name
     twitter_info['info']['nickname']
   end
 
   def twitter_url
-    "https://twitter.com/#{screenname}"
+    "https://twitter.com/#{screen_name}"
   end
 
   def twitter_credentials
@@ -39,12 +39,12 @@ class User < ActiveRecord::Base
     self.update_attribute :twitter_account_id, account.id unless account.id == twitter_account_id
   end
 
-  def find_or_create_associated_twitter_account    
+  def find_or_create_associated_twitter_account
     return account_by_screen_name if account_by_screen_name.present?
     TwitterAccount.create_from_twitter_oauth(twitter_info)
   end
 
   def account_by_screen_name
-    @account_by_screen_name ||= TwitterAccount.fuzzy_screenname_find(screenname)
+    @account_by_screen_name ||= TwitterAccount.fuzzy_screen_name_find(screen_name)
   end
 end

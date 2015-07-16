@@ -12,8 +12,8 @@ describe TwitterAccount do
     twitter_account.address = "4 Penn Plaza, New York, NY 10001, USA"
     twitter_account.geocode
     
-    expect(twitter_account.latitude).to eq(40.7536276)
-    expect(twitter_account.longitude).to eq(-73.9902364)
+    expect(twitter_account.latitude).to eq(40.750354)
+    expect(twitter_account.longitude).to eq(-73.9933710)
   end
 
   describe :twitter_link do 

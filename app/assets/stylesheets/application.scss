@@ -27,3 +27,11 @@ html {
   background-size: cover;
   body { background: none; }
 }
+
+.panel {
+  form { font-size: 120%; }
+  label {
+    font-weight: normal;
+    small { color: $gray-light; }
+  }
+}
