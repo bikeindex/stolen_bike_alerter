@@ -31,7 +31,7 @@ describe TwitterAccountsController do
         address: "new address",
         is_active: true,
       }
-      put :update, id: 'something', account: opts
+      put :update, id: 'something', twitter_account: opts
       user.twitter_account.reload
       expect(user.twitter_account.append_block).to eq('Cool stuff')
       expect(user.twitter_account.is_active).to eq(true)
