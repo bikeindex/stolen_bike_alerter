@@ -16,9 +16,10 @@ class Tweet < ActiveRecord::Base
   end
 
   def create_bike_index_post_hash
+    bike.reload
     p_hash = {
       notification_type: 'stolen_twitter_alerter',
-      bike_id: bike.reload.bike_index_bike_id,
+      bike_id: bike.bike_index_bike_id,
       tweet_id: twitter_tweet_id,
       tweet_string: tweet_string,
       tweet_account_screen_name: twitter_account.screen_name,

@@ -1,0 +1,14 @@
+!!!
+%html
+  %head
+    %title
+      Stolen Tweetor
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+    %link{:href => "/fav.ico", :rel => "shortcut icon"}
+  %body
+    = render partial: "/layouts/header" unless @noheader
+    .container-fluid.main-container
+      = render partial: "/layouts/flash_messages", flash: flash
+      = yield

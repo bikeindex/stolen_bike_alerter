@@ -1,0 +1,15 @@
+.jumbotron
+  %h1
+    Stolen bike tweetor
+    %small
+      by 
+      = link_to "Bike Index", "https://bikeindex.org"
+  %p.padded
+    Authenticate with Twitter to manage regional stolen bike accounts.
+    
+
+  %p.text-center.padded
+    %a.btn.btn-lg.btn-primary.auth-twitter-butt{ href: twitter_account_path('twitter') }
+      Authenticate with Twitter
+      %small
+        Requires logging in - doesn't use the account you're currently logged into

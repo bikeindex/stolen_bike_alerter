@@ -19,8 +19,9 @@ describe TwitterTweeterIntegration do
     @twitter_account = TwitterAccount.new
     @twitter_account[:consumer_key]    = ENV['CONSUMER_KEY']
     @twitter_account[:consumer_secret] = ENV['CONSUMER_SECRET']
-    @twitter_account[:user_token]        = ENV['ACCESS_TOKEN']
-    @twitter_account[:user_secret] = ENV['ACCESS_TOKEN_SECRET']
+    @twitter_account[:user_token]      = ENV['ACCESS_TOKEN']
+    @twitter_account[:user_secret]     = ENV['ACCESS_TOKEN_SECRET']
+    @twitter_account[:screen_name]     = ENV['TEST_SCREEN_NAME']
     @twitter_account.default = false
   end
 
@@ -32,18 +33,43 @@ describe TwitterTweeterIntegration do
   end
 
   describe :build_bike_status do
-    xit "creates correct string without media" do
+    it "creates correct string without media" do
       tti = TwitterTweeterIntegration.new(@bike_no_media)
-      tti.instance_variable_set(:@close_twitters, TwitterAccount.where(screen_name: 'stolenbikessfo'))
-      pp tti
+      tti.instance_variable_set(:@close_twitters, [@twitter_account])
+      # pp tti
       expect(tti.build_bike_status).to eq("STOLEN - Blue Trek 930 in Lower Haight https://bikeindex.org/bikes/967")
+    end
+
+    xit "creates correct string with media" do
+      tti = TwitterTweeterIntegration.new(@bike_no_media)
+      tti.instance_variable_set(:@close_twitters, [@twitter_account])
+      expect(tti.build_bike_status).to eq("STOLEN - Blue Trek 930 in Lower Haight https://bikeindex.org/bikes/967")
+    end
+
+    it "creates correct string with append block" do
+      @twitter_account.append_block = '#bikeParty'
+      tti = TwitterTweeterIntegration.new(@bike_no_media)
+      tti.instance_variable_set(:@close_twitters, [@twitter_account])
+      status = tti.build_bike_status
+      expect(status).to eq("STOLEN - Blue Trek 930 in Lower Haight https://bikeindex.org/bikes/967 #bikeParty")
+      @twitter_account.append_block = nil
+    end
+
+    it "creates correct string without append block if string is too long" do
+      @twitter_account.append_block = '#bikeParty'
+      @bike_no_media.bike_index_api_response["frame_model"] = "Large and sweet MTB, a much longer frame model"
+      tti = TwitterTweeterIntegration.new(@bike_no_media)
+      tti.instance_variable_set(:@close_twitters, [@twitter_account])
+      status = tti.build_bike_status
+      expect(status).to eq("STOLEN - Blue Trek Large and sweet MTB, a much longer frame model in Lower Haight https://bikeindex.org/bikes/967")
+      @twitter_account.append_block = nil
     end
   end
 
   describe :create_tweet do
     xit "posts a text only tweet properly" do
-      pp @bike_no_media.bike_index_api_response[:bikes][:stolen_record][:latitude]
-      pp @bike_no_media.bike_index_api_response[:bikes][:stolen_record][:longitude]
+      # pp @bike_no_media.bike_index_api_response[:bikes][:stolen_record][:latitude]
+      # pp @bike_no_media.bike_index_api_response[:bikes][:stolen_record][:longitude]
       expect(TwitterTweeterIntegration.new(@bike_no_media).create_tweet).to be_an_instance_of(Twitter::Tweet)
     end
   end

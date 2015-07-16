@@ -42,6 +42,9 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.6)
     arel (5.0.1.20140414130214)
+    bcrypt (3.1.7)
+    bootstrap-sass (3.2.0.2)
+      sass (~> 3.2)
     brakeman (2.5.0)
       erubis (~> 2.6)
       fastercsv (~> 1.5)
@@ -66,6 +69,13 @@ GEM
       execjs
     coffee-script-source (1.7.0)
     database_cleaner (1.3.0)
+    devise (3.3.0)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 3.2.6, < 5)
+      thread_safe (~> 0.1)
+      warden (~> 1.2.3)
+    devise-bootstrap-views (0.0.5)
     diff-lcs (1.2.5)
     dotenv (0.7.0)
     dotenv-rails (0.7.0)
@@ -107,6 +117,7 @@ GEM
       rspec (>= 2.14, < 4.0)
     haml (4.0.5)
       tilt
+    hashie (3.4.2)
     highline (1.6.21)
     hike (1.2.3)
     honeybadger (1.16.5)
@@ -143,6 +154,17 @@ GEM
     naught (1.0.0)
     node (0.0.2)
       eventmachine
+    oauth (0.4.7)
+    omniauth (1.2.2)
+      hashie (>= 1.2, < 4)
+      rack (~> 1.0)
+    omniauth-oauth (1.1.0)
+      oauth
+      omniauth (~> 1.0)
+    omniauth-twitter (1.2.0)
+      json (~> 1.3)
+      omniauth-oauth (~> 1.1)
+    orm_adapter (0.5.0)
     pg (0.17.1)
     pry (0.9.12.6)
       coderay (~> 1.0)
@@ -175,8 +197,6 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.4)
       ffi (>= 0.5.0)
-    rdoc (4.1.1)
-      json (~> 1.4)
     rspec (3.0.0.rc1)
       rspec-core (= 3.0.0.rc1)
       rspec-expectations (= 3.0.0.rc1)
@@ -200,9 +220,6 @@ GEM
       sass (~> 3.2.0)
       sprockets (~> 2.8, <= 2.11.0)
       sprockets-rails (~> 2.0)
-    sdoc (0.4.0)
-      json (~> 1.8)
-      rdoc (~> 4.0, < 5.0)
     sexp_processor (4.4.3)
     shoulda-matchers (2.6.1)
       activesupport (>= 3.0.0)
@@ -227,8 +244,6 @@ GEM
     thread_safe (0.3.5)
     tilt (1.4.1)
     timers (1.1.0)
-    turbolinks (2.2.2)
-      coffee-rails
     twitter (5.9.0)
       addressable (~> 2.3)
       buftok (~> 0.2.0)
@@ -245,14 +260,19 @@ GEM
     uglifier (2.5.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    warden (1.2.3)
+      rack (>= 1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootstrap-sass
   brakeman
   coffee-rails (~> 4.0.0)
   database_cleaner
+  devise
+  devise-bootstrap-views
   dotenv-rails
   factory_girl_rails
   foreman
@@ -261,11 +281,14 @@ DEPENDENCIES
   guard
   guard-livereload
   guard-rspec
+  haml
   honeybadger
   httparty
   jbuilder (~> 2.0)
   jquery-rails
   node
+  omniauth
+  omniauth-twitter
   pg
   rails (= 4.1.11)
   rails_12factor
@@ -273,9 +296,7 @@ DEPENDENCIES
   rspec (~> 3.0.0.beta2)
   rspec-rails!
   sass-rails (~> 4.0.3)
-  sdoc (~> 0.4.0)
   shoulda-matchers
   spring
-  turbolinks
   twitter
   uglifier (>= 1.3.0)
