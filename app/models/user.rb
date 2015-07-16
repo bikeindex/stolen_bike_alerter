@@ -24,6 +24,10 @@ class User < ActiveRecord::Base
     twitter_info['info']['nickname']
   end
 
+  def twitter_url
+    "https://twitter.com/#{screenname}"
+  end
+
   def twitter_credentials
     (twitter_info['credentials'] || {}).with_indifferent_access
   end

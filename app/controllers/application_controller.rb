@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   force_ssl if: :ssl_configured?
-  # before_action :ensure_authorized_user
+  before_action :ensure_authorized_user
 
   def ssl_configured?
     Rails.env.production?
@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   private
 
   def after_sign_out_path_for(resource_or_scope)
-    welcome_index_url
+    root_url
   end
 
   def after_sign_in_path_for(resource_or_scope)

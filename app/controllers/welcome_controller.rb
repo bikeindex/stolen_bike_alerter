@@ -3,6 +3,7 @@ class WelcomeController < ApplicationController
 
   def index
     redirect_to :account_index and return if current_user.present?
+    @noheader = true
   end
 
 end
