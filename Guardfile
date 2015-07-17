@@ -3,7 +3,7 @@ rspec_opts = {
   cmd: "bundle exec rspec"
 }
 
-guard :rspec, rspec_opts do
+guard :rspec,rspec_opts do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch(%r{^app/controllers/api/v1/(.+)\.rb$})        { |m| "spec/api/v1/#{m[1]}_spec.rb"}

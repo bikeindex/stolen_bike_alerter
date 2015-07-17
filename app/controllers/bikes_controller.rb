@@ -6,11 +6,12 @@ class BikesController < ApplicationController
 
   def create
     api_url = params[:api_url]
-    bike_index_api_response = bike_index_response(api_url)
-    bike = Bike.create(bike_index_api_url: api_url,
-      bike_index_api_response: bike_index_api_response,
-      latitude: bike_index_api_response['stolen_record']['latitude'], 
-      longitude: bike_index_api_response['stolen_record']['longitude'])
+    bike = Bike.create_from_api_url(api_url)
+    # bike_index_api_response = bike_index_response(api_url)
+    # bike = Bike.create(bike_index_api_url: api_url,
+    #   bike_index_api_response: bike_index_api_response,
+    #   latitude: bike_index_api_response['stolen_record']['latitude'], 
+    #   longitude: bike_index_api_response['stolen_record']['longitude'])
 
     new_tweet = TwitterTweeterIntegration.new(bike).create_tweet
 
@@ -20,9 +21,8 @@ class BikesController < ApplicationController
   end
 
   def bike_index_response(bike_index_api_url)
-    bike_response = Net::HTTP.get_response(URI.parse(bike_index_api_url)).body
-    bike_response = JSON.parse(bike_response)
-    bike_response['bikes']
+    Net::HTTP.get_response(URI.parse(bike_index_api_url)).body
+    JSON.parse(bike_response)
   end
 
   private

@@ -1,26 +1,65 @@
 require 'spec_helper'
 
 describe Bike do
-  
-  # describe :validations do
-  #   it { should have_one :tweet }
-  #   it { should have_many :retweets }
-  #   it { should validate_presence_of :bike_index_api_url }
-  #   it { should validate_presence_of :bike_index_api_response }
-  #   it { should serialize :bike_index_api_response }
+
+  it { should have_one :tweet }
+  it { should have_many :retweets }
+  it { should validate_presence_of :bike_index_api_url }
+  it { should validate_presence_of :bike_index_api_response }
+  it { should serialize :bike_index_api_response }
+
+  # describe :serialize do 
+  #   xit "should make a hash with indifferent access out of an API response" do
+  #     bike = FactoryGirl.build(:bike_with_binx)
+  #     # bi_response = 
+  #     # bike.bike_index_api_response = JSON.parse(bi_response)['bikes']
+  #     bike.serialize_api_response
+  #     bike.latitude = bike.bike_index_api_response[:stolen_record][:latitude]
+  #     bike.longitude = bike.bike_index_api_response[:stolen_record][:longitude]
+  #     expect(bike.bike_index_api_response[:id]).to eq(3414)
+  #     expect(bike.bike_index_bike_id).to eq(3414)
+  #   end
   # end
 
-  describe :serialize do 
-    it "should make a hash with indifferent access out of an API response" do
-      bike = Bike.new
-      bi_response = '{"bikes":{"id":3414,"serial":"stolen_serial_number","registration_created_at":"2014-05-20T10:34:44-05:00","registration_updated_at":"2014-05-20T10:36:50-05:00","url":"https://bikeindex.org/bikes/3414","api_url":"https://bikeindex.org/api/v1/bikes/3414","manufacturer_name":"Jamis","manufacturer_id":201,"frame_colors":["Blue"],"paint_description":"Ano Black","stolen":true,"name":"","year":2014,"frame_model":"Allegro Comp Disc","description":"Triple-butted 6061 aluminum with hydro-formed top and down tube, taper gauge \"S\" bend stays, replaceable derailleur hanger, disc brake mounts, eyeleted dropouts and seatstay rack mounts","rear_tire_narrow":true,"front_tire_narrow":true,"photo":"https://bikebook.s3.amazonaws.com/uploads/Fr/9979/14_allegrocompdisc_bk.jpg","thumb":"https://bikebook.s3.amazonaws.com/uploads/Fr/9979/small_14_allegrocompdisc_bk.jpg","title":"2014 Jamis Allegro Comp Disc (blue)","images":[],"rear_wheel_size":{"iso_bsd":622,"name":"700 C","description":"700 C, 29in mountain bikes (Standard size)"},"front_wheel_size":{"iso_bsd":622,"name":"700 C","description":"700 C, 29in mountain bikes (Standard size)"},"handlebar_type":null,"frame_material":null,"front_gear_type":null,"rear_gear_type":null,"stolen_record":{"date_stolen":"2014-05-20T01:00:00-05:00","location":"Chicago, IL","latitude":41.9161202,"longitude":-87.6677594,"theft_description":"This is a test stolen bike.","locking_description":"U-lock","lock_defeat_description":"Lock is missing, along with the bike.","police_report_number":"Some number","police_report_department":"Chicago, IL"},"components":[{"component_type":"fork","component_group":"Frame and fork","rear":null,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"headset","component_group":"Frame and fork","rear":null,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"wheel","component_group":"Wheels","rear":null,"front":true,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"wheel","component_group":"Wheels","rear":true,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"tire","component_group":"Wheels","rear":null,"front":true,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"tire","component_group":"Wheels","rear":true,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"derailleur","component_group":"Drivetrain and brakes","rear":null,"front":true,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"derailleur","component_group":"Drivetrain and brakes","rear":true,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"shifter","component_group":"Drivetrain and brakes","rear":null,"front":true,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"shifter","component_group":"Drivetrain and brakes","rear":true,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"chain","component_group":"Drivetrain and brakes","rear":null,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"cog/cassette/freewheel","component_group":"Drivetrain and brakes","rear":null,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"crankset","component_group":"Drivetrain and brakes","rear":null,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"bottom bracket","component_group":"Drivetrain and brakes","rear":null,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"pedals","component_group":"Drivetrain and brakes","rear":null,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"brake","component_group":"Drivetrain and brakes","rear":null,"front":true,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"brake","component_group":"Drivetrain and brakes","rear":true,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"handlebar","component_group":"Additional parts","rear":null,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"stem","component_group":"Additional parts","rear":null,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"grips/tape","component_group":"Additional parts","rear":null,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"seatpost","component_group":"Additional parts","rear":null,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null},{"component_type":"saddle","component_group":"Additional parts","rear":null,"front":null,"manufacturer_name":null,"manufacturer_id":null,"model_name":"","year":null}]}}'
-      bike.bike_index_api_response = JSON.parse(bi_response)['bikes']
-      bike.serialize_api_response
-      bike.latitude = bike.bike_index_api_response[:stolen_record][:latitude]
-      bike.longitude = bike.bike_index_api_response[:stolen_record][:longitude]
-      expect(bike.bike_index_api_response[:id]).to eq(3414)
-      expect(bike.bike_index_bike_id).to eq(3414)
+  describe :create_from_api_url do 
+    it "creates a bike from an api url" do 
+      fixture = JSON.parse(File.read(Rails.root.join("spec/fixtures/binx_info.json")))
+      bike = Bike.create_from_api_url(fixture['api_url'])
+      expect(bike.bike_index_api_url).to be_present
+      expect(bike.bike_index_api_response).to eq(fixture)
+      expect(bike.bike_index_bike_id).to be_present
+      pp bike.city
+      pp bike.state
+      pp bike.latitude
+      pp bike.longitude
+      expect(bike.city).to be_present
+      expect(bike.state).to be_present
+      expect(bike.latitude).to be_present
+      expect(bike.longitude).to be_present
+      # expect(bike.neighborhood).to be_present # Not in our geo specs file...
     end
   end
+
+  describe :api_v1_url_from_binx_id do 
+    it "returns URI" do
+      uri = Bike.api_v1_url_from_binx_id("3414")
+      expect(uri).to eq(URI.parse("https://bikeindex.org/api/v1/bikes/3414"))
+    end
+  end
+
+  describe :binx_id_from_url do 
+    it "returns id" do 
+      id = Bike.binx_id_from_url("https://bikeindex.org/api/v1/bikes/3414")
+      expect(id).to eq(3414)
+    end
+  end
+
+  describe :is_api_v1 do 
+    it "checks for v1" do 
+      bike = Bike.new(bike_index_api_url: "https://bikeindex.org/api/v1/bikes/3414")
+      expect(bike.is_api_v1).to be_truthy
+    end
+  end
+
   
 end

@@ -1,9 +1,6 @@
 class TwitterAccount < ActiveRecord::Base
-  # Attributes:  latitude, longitude, address, is_national
-  #              consumer_key, consumer_secret, user_token, user_secret
-  #              screen_name, twitter_account_info, language
-
   scope :active, -> { where(is_active: true) }
+  scope :national, -> { where(is_national: true) }
   has_many :tweets
   has_one :user
   serialize :twitter_account_info
@@ -23,6 +20,23 @@ class TwitterAccount < ActiveRecord::Base
     })
   end
 
+  def self.fuzzy_screen_name_find(n)
+    if !n.blank?
+      self.where("lower(screen_name) = ?", n.downcase.strip).first
+    else
+      nil
+    end
+  end
+
+  def self.accounts_in_proximity(bike)
+    @close_twitters = TwitterAccount.active.near(@bike, 50)
+    @close_twitters << TwitterAccount.active.where(default: true).first
+  end
+
+  def self.default_account
+    self.national.first
+  end
+
   def twitter_account_url
     "https://twitter.com/#{screen_name}"
   end
@@ -38,9 +52,14 @@ class TwitterAccount < ActiveRecord::Base
       config.access_token        = user_token
       config.access_token_secret = user_secret
     end
-    result = client.user(screen_name)
-    self.twitter_account_info = result.to_h
+    client.user(screen_name).to_h
   end
+
+  before_save :set_account_info
+  def set_account_info
+    self.twitter_account_info ||= get_account_info
+  end
+
 
   def account_info_name
     return nil unless twitter_account_info.present?
@@ -50,15 +69,6 @@ class TwitterAccount < ActiveRecord::Base
   def account_info_image
     return nil unless twitter_account_info.present?
     twitter_account_info[:profile_image_url_https]
-  end
-
-  def self.fuzzy_screen_name_find(n)
-    if !n.blank?
-      self.where("lower(screen_name) = ?", n.downcase.strip).first
-    else
-      nil
-    end
-    
   end
 
 end
