@@ -6,6 +6,8 @@ class Bike < ActiveRecord::Base
   validates_presence_of :bike_index_api_response
   serialize :bike_index_api_response
   attr_accessor :no_geocode
+  include HTTParty
+  ssl_version :TLSv1
 
   after_validation :reverse_geocode
   reverse_geocoded_by :latitude, :longitude do |bike,results|
