@@ -27,6 +27,18 @@ describe Bike do
     end
   end
 
+
+  describe :get_api_response do 
+    it 'works' do 
+      result = Bike.get_api_response(3414)
+      fixture = JSON.parse(File.read(Rails.root.join("spec/fixtures/binx_info.json")))
+      result.delete('registration_updated_at') # Delete updated at, it gets bumped periodically
+      fixture.delete('registration_updated_at') # Delete it here too, we don't care
+      expect(result).to eq(fixture)
+    end
+
+  end
+
   describe :api_v1_url_from_binx_id do 
     it "returns URI" do
       uri = Bike.api_v1_url_from_binx_id("3414")
@@ -65,7 +77,7 @@ describe Bike do
       default = FactoryGirl.create(:national_active_twitter_account)
       national_account = FactoryGirl.create(:secondary_active_twitter_account, is_national: true)
       national_account.update_attribute :country, "Canada"
-      bike.twitter_accounts_in_proximity.should eq([national_account])
+      expect(bike.twitter_accounts_in_proximity).to eq([national_account])
     end
   end
   
