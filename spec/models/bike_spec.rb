@@ -30,7 +30,7 @@ describe Bike do
   describe :api_v1_url_from_binx_id do 
     it "returns URI" do
       uri = Bike.api_v1_url_from_binx_id("3414")
-      expect(uri).to eq(URI.parse("https://bikeindex.org/api/v1/bikes/3414"))
+      expect(uri).to eq("https://bikeindex.org/api/v1/bikes/3414")
     end
   end
 

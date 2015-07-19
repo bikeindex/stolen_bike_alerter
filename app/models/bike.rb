@@ -30,7 +30,7 @@ class Bike < ActiveRecord::Base
 
   def self.get_api_response(bike_id)
     uri = api_v1_url_from_binx_id(bike_id)
-    JSON.parse(Net::HTTP.get_response(uri).body)['bikes']
+    JSON.parse(HTTParty.get(uri).body)['bikes']
   end
 
   def self.binx_id_from_url(api_url)
@@ -38,7 +38,7 @@ class Bike < ActiveRecord::Base
   end
 
   def self.api_v1_url_from_binx_id(bike_id)
-    URI.parse("https://bikeindex.org/api/v1/bikes/#{bike_id}")
+    "https://bikeindex.org/api/v1/bikes/#{bike_id}"
   end
 
   def is_api_v1 
