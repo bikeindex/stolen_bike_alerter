@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.1.0"
+ruby "2.2.1"
 gem 'rails', '4.1.11'
 gem 'pg'
 
@@ -16,6 +16,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'jbuilder', '~> 2.0'
+gem 'eventmachine', '~> 1.0.4'
 
 gem 'bootstrap-sass'
 
@@ -42,7 +43,6 @@ group :development do
   gem 'brakeman'
   gem 'guard'
   gem 'guard-rspec'
-  gem 'guard-livereload'
 end
 
 group :development, :test do

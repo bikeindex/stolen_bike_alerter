@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 describe BikesController do
   describe "POST #create" do
     context "without correct parameters" do
@@ -22,8 +23,7 @@ describe BikesController do
         expect(response).to be_success
       end
 
-      it "should create a tweet and retweet the appropriate twitters" do
-      end
+      xit "should create a tweet and retweet the appropriate twitters"
     end
   end
   
