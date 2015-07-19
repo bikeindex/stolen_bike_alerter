@@ -31,6 +31,7 @@ describe User do
     end
 
     it "creates the twitter account if one doesn't exist" do
+      expect_any_instance_of(TwitterAccount).to receive(:set_account_info).and_return(true)
       fixture = omniauth_twitter_fixture
       user = User.from_omniauth(fixture['uid'], fixture)
       expect(user.screen_name).to eq('johnqpublic')
@@ -46,6 +47,7 @@ describe User do
 
   describe :update_twitter_info do 
     it "associates a created twitter account" do 
+      expect_any_instance_of(TwitterAccount).to receive(:set_account_info).and_return(true)
       fixture = omniauth_twitter_fixture
       fixture['info']['location'] = ' '
       user = User.from_omniauth(fixture['uid'], fixture)

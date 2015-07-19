@@ -23,8 +23,7 @@ describe TwitterAccountsController do
 
   describe 'update' do 
     it "should update" do 
-      user = user_from_twitter_fixture
-      user.update_twitter_info(user.twitter_info)
+      user = FactoryGirl.create(:user_with_active_twitter_account)
       sign_in user
       opts = {
         append_block: "Cool stuff",
@@ -35,7 +34,7 @@ describe TwitterAccountsController do
       user.twitter_account.reload
       expect(user.twitter_account.append_block).to eq('Cool stuff')
       expect(user.twitter_account.is_active).to eq(true)
-      expect(user.twitter_account.address).to eq('new address')
+      expect(user.twitter_account.address).to eq('new address')      
     end
   end
 

@@ -1,18 +1,21 @@
 class TwitterTweeterIntegration
-  require 'twitter'
-  require 'geocoder'
+  # require 'twitter'
+  # require 'geocoder'
   require 'tempfile'
   require 'open-uri'
 
   def initialize(bike)
     @bike = bike
-    @close_twitters = TwitterAccount.active.near(@bike, 50)
-    @close_twitters << TwitterAccount.active.where(default: true).first
   end
 
   attr_accessor :max_char, :close_twitters
 
+  def set_close_twitters
+    @close_twitters = TwitterAccount.nearby_accounts(@bike)
+  end
+
   def create_tweet
+    set_close_twitters
     update_str = build_bike_status
     update_opts = {
       lat: @bike.bike_index_api_response[:stolen_record][:latitude],
@@ -20,33 +23,27 @@ class TwitterTweeterIntegration
       display_coordinates: "true" }
     client = twitter_client_start(@close_twitters.first)
 
-    new_tweet = nil
     if (@bike.bike_index_api_response[:photo])
       Tempfile.open(['foto', '.jpg'], nil, 'wb+') do |foto|
         foto.binmode
         foto.write open(@bike.bike_index_api_response[:photo]).read
         foto.rewind
-        new_tweet = client.update_with_media(update_str, foto, update_opts)
+        posted_tweet = client.update_with_media(update_str, foto, update_opts)
       end
     else
-      new_tweet = client.update(update_str, update_opts)
+      posted_tweet = client.update(update_str, update_opts)
     end
 
-    @tweet = Tweet.create(twitter_tweet_id: new_tweet.id,
-      twitter_account_id: @close_twitters.first[:id],
+    @tweet = Tweet.create(twitter_tweet_id: posted_tweet.id,
+      twitter_account_id: @close_twitters.first[:id], # Maybe use shift here?
       bike_id: @bike.id,
-      tweet_string: update_str
-      )
+      tweet_string: update_str)
 
-    retweet if @close_twitters.size > 1
-    return @tweet
+    retweet(posted_tweet)
   end
 
-  private
-
-
-  def retweet
-    retweets = []
+  def retweet(posted_tweet)
+    retweets = [posted_tweet]
     @close_twitters.each do |twitter_name|
       next if twitter_name.id == @tweet.twitter_account_id
       client = twitter_client_start(twitter_name)
@@ -54,6 +51,7 @@ class TwitterTweeterIntegration
       rt = client.retweet(@tweet[:twitter_tweet_id]).first
       retweets.push(Retweet.create(twitter_tweet_id: rt.id, twitter_account_id: twitter_name.id, bike_id: @tweet.bike.id, tweet_id: @tweet.id))
     end
+    retweets
   end
 
   def stolen_slug

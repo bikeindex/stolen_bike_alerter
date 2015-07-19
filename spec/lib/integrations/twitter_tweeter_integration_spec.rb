@@ -1,52 +1,40 @@
 require 'spec_helper'
-require_relative '../../../lib/integrations/twitter_tweeter_integration'
-require 'dotenv'
-
-Dotenv.load
 
 describe TwitterTweeterIntegration do
-  before(:each) do
-    TwitterTweeterIntegration.send(:public, *TwitterTweeterIntegration.private_instance_methods)
-
-    @bike_no_media = Bike.new
-    bi_response = '{"bikes":{"id":967,"serial":"absent","registration_created_at":"2013-10-15T12:50:37-05:00","registration_updated_at":"2014-03-12T19:44:06-05:00","url":"https://bikeindex.org/bikes/967","api_url":"https://bikeindex.org/api/v1/bikes/967","manufacturer_name":"Trek","manufacturer_id":47,"frame_colors":["Blue","Stickers tape or other cover-up"],"paint_description":null,"stolen":true,"name":"","year":null,"frame_model":"930","description":"Trek 930 with a rack, new trigger shifters (replaced from the standard grip shifters), new grips, bar ends. Three stickers: 1 saying \"Burritophile\", another SFBC member sticker, and a 0.00 and 0/10ths gas price sticker. ","rear_tire_narrow":true,"front_tire_narrow":true,"photo":null,"thumb":null,"title":"Trek 930 (blue and stickers tape or other cover-up)","images":[],"rear_wheel_size":{"iso_bsd":559,"name":"26in","description":"26in (Standard size)"},"front_wheel_size":{"iso_bsd":559,"name":"26in","description":"26in (Standard size)"},"handlebar_type":{"name":"Flat","slug":"flat"},"frame_material":{"name":"Steel","slug":"steel"},"front_gear_type":{"name":"3"},"rear_gear_type":{"name":"8"},"stolen_record":{"date_stolen":"2013-09-30T01:00:00-05:00","location":"San Francisco, CA, 94117","latitude":37.770506,"longitude":-122.436556,"theft_description":"Someone climbed up to my porch on the second floor and ripped it right off. ","locking_description":"","lock_defeat_description":"","police_report_number":"","police_report_department":null},"components":[]}}'
-    @bike_no_media.bike_index_api_response = JSON.parse(bi_response)['bikes']
-    @bike_no_media.serialize_api_response
-    @bike_no_media.city = "San Francisco"
-    @bike_no_media.state = "CA"
-    @bike_no_media.neighborhood = "Lower Haight"
-
-    @twitter_account = TwitterAccount.new
-    @twitter_account[:consumer_key]    = ENV['CONSUMER_KEY']
-    @twitter_account[:consumer_secret] = ENV['CONSUMER_SECRET']
-    @twitter_account[:user_token]      = ENV['ACCESS_TOKEN']
-    @twitter_account[:user_secret]     = ENV['ACCESS_TOKEN_SECRET']
-    @twitter_account[:screen_name]     = ENV['TEST_SCREEN_NAME']
-    @twitter_account.default = false
-  end
 
   describe :twitter_client_start do
     it "returns a functional Twitter::REST::Client" do
+      @bike_no_media = FactoryGirl.build(:bike_with_binx)
+      @twitter_account = FactoryGirl.build(:active_twitter_account)
       client = TwitterTweeterIntegration.new(@bike_no_media).twitter_client_start(@twitter_account)
       expect(client).to be_an_instance_of(Twitter::REST::Client)
     end
   end
 
   describe :build_bike_status do
+    before(:each) do
+      @bike_no_media = FactoryGirl.build(:bike_no_media)
+      @default_account = FactoryGirl.build(:secondary_active_twitter_account, default: true)
+      @twitter_account = FactoryGirl.build(:active_twitter_account)
+    end
+
     it "creates correct string without media" do
+      @bike_no_media.bike_index_api_response["frame_model"] = "930"
       tti = TwitterTweeterIntegration.new(@bike_no_media)
       tti.instance_variable_set(:@close_twitters, [@twitter_account])
       # pp tti
       expect(tti.build_bike_status).to eq("STOLEN - Blue Trek 930 in Lower Haight https://bikeindex.org/bikes/967")
     end
 
-    xit "creates correct string with media" do
+    it "creates correct string with media" do
+      @bike_no_media.bike_index_api_response["frame_model"] = "930"
       tti = TwitterTweeterIntegration.new(@bike_no_media)
       tti.instance_variable_set(:@close_twitters, [@twitter_account])
       expect(tti.build_bike_status).to eq("STOLEN - Blue Trek 930 in Lower Haight https://bikeindex.org/bikes/967")
     end
 
     it "creates correct string with append block" do
+      @bike_no_media.bike_index_api_response["frame_model"] = "930"
       @twitter_account.append_block = '#bikeParty'
       tti = TwitterTweeterIntegration.new(@bike_no_media)
       tti.instance_variable_set(:@close_twitters, [@twitter_account])
@@ -66,11 +54,22 @@ describe TwitterTweeterIntegration do
     end
   end
 
+  describe :retweet do 
+    it "retweets" do 
+      fail
+    end
+  end
+
   describe :create_tweet do
-    xit "posts a text only tweet properly" do
-      # pp @bike_no_media.bike_index_api_response[:bikes][:stolen_record][:latitude]
-      # pp @bike_no_media.bike_index_api_response[:bikes][:stolen_record][:longitude]
-      expect(TwitterTweeterIntegration.new(@bike_no_media).create_tweet).to be_an_instance_of(Twitter::Tweet)
+    it "posts a text only tweet properly" do
+      bike_no_media = FactoryGirl.build(:bike_no_media)
+      twitter_account = FactoryGirl.build(:active_twitter_account)
+      integration = TwitterTweeterIntegration.new(bike_no_media)
+      expect(TwitterAccount).to receive(:nearby_accounts).and_return([twitter_account])
+      # pp bike_no_media.bike_index_api_response[:bikes][:stolen_record][:latitude]
+      # pp bike_no_media.bike_index_api_response[:bikes][:stolen_record][:longitude]
+      tweets = integration.create_tweet
+      expect(tweetsfirst).to be_an_instance_of(Twitter::Tweet)
     end
   end
 end

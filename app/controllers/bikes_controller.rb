@@ -7,26 +7,12 @@ class BikesController < ApplicationController
   def create
     api_url = params[:api_url]
     bike = Bike.create_from_api_url(api_url)
-    # bike_index_api_response = bike_index_response(api_url)
-    # bike = Bike.create(bike_index_api_url: api_url,
-    #   bike_index_api_response: bike_index_api_response,
-    #   latitude: bike_index_api_response['stolen_record']['latitude'], 
-    #   longitude: bike_index_api_response['stolen_record']['longitude'])
-
     new_tweet = TwitterTweeterIntegration.new(bike).create_tweet
-
     BikeIndexEmailGenerator.new.send_email_hash(new_tweet)
-
     render :nothing => true
   end
 
-  def bike_index_response(bike_index_api_url)
-    Net::HTTP.get_response(URI.parse(bike_index_api_url)).body
-    JSON.parse(bike_response)
-  end
-
   private
-
   def verify_key
     unless params[:key].present? && params[:key] == ENV['INCOMING_REQUEST_KEY']
       render json: "Not authorized", status: :unauthorized and return

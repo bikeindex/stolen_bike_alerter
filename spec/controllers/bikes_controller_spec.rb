@@ -15,8 +15,8 @@ describe BikesController do
     context "with an :api_url" do
       it "should return success" do
         allow_any_instance_of(BikesController).to receive(:verify_key)
-        expect_any_instance_of(TwitterTweeterIntegration).to receive(:create_tweet)
         expect_any_instance_of(BikeIndexEmailGenerator).to receive(:send_email_hash)
+        expect_any_instance_of(TwitterTweeterIntegration).to receive(:create_tweet)
         options = { api_url: "https://bikeindex.org/api/v1/bikes/3414" }
         post :create, options, format: :json
         expect(response).to be_success
@@ -27,13 +27,6 @@ describe BikesController do
     end
   end
   
-  describe "bike_index_reponse" do 
-    it "should get a bike index response" do 
-      bike_index_api_url = 'https://bikeindex.org/api/v1/bikes/3414'
-      bike_response = BikesController.new.bike_index_response(bike_index_api_url)
-      expect(bike_response['serial']).to eq('stolen_serial_number')
-    end
-  end
 end
 
 

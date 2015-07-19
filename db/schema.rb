@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150717144504) do
+ActiveRecord::Schema.define(version: 20150717171906) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20150717144504) do
     t.float    "latitude"
     t.float    "longitude"
     t.integer  "bike_index_bike_id"
+    t.string   "country"
   end
 
   create_table "retweets", force: true do |t|
@@ -66,7 +67,11 @@ ActiveRecord::Schema.define(version: 20150717144504) do
     t.string   "language"
     t.boolean  "is_active",            default: false, null: false
     t.string   "append_block"
-    t.integer  "proximity",            default: 50
+    t.boolean  "default",              default: false, null: false
+    t.string   "country"
+    t.string   "city"
+    t.string   "state"
+    t.string   "neighborhood"
   end
 
   add_index "twitter_accounts", ["latitude", "longitude"], name: "index_twitter_accounts_on_latitude_and_longitude", using: :btree

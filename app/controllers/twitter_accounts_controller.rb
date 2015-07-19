@@ -16,7 +16,8 @@ class TwitterAccountsController < ApplicationController
   private
 
   def account_params
-    params.require(:twitter_account).permit(:is_active, :append_block, :address, :latitude, :longitude)
+    params.require(:twitter_account).permit(:is_active, :append_block, :address,
+      :latitude, :longitude)
   end
 
 end

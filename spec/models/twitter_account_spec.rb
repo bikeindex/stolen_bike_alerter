@@ -61,21 +61,34 @@ describe TwitterAccount do
     end
   end
 
-
-  describe :close_accounts do 
-    it "finds close accounts" do 
-
+  describe :default_account_for_country do 
+    it "finds national account" do 
+      default = FactoryGirl.create(:national_active_twitter_account)
+      national = FactoryGirl.create(:secondary_active_twitter_account, is_national: true)
+      national.update_attribute :country, "Australia"
+      expect(TwitterAccount.default_account_for_country("Australia").id).to eq(national.id)
     end
 
-    it "returns default if bike is in a country we don't have an account for" do 
-      bike = FactoryGirl.create(:canadian_bike)
-      pp bike.city
-      pp bike.state
-      pp bike.neighborhood
-      pp bike.latitude
-      pp bike.longitude
-      national_account = FactoryGirl.create(:national_active_twitter_account)
-      TwitterAccount.close_accounts(bike)
+    it "finds default account if no national exists for the country" do
+      default = FactoryGirl.create(:national_active_twitter_account)
+      national = FactoryGirl.create(:secondary_active_twitter_account, is_national: true)
+      national.update_attribute :country, "Australia"
+      expect(TwitterAccount.default_account_for_country("Canada").id).to eq(default.id)
     end
   end
+
+  describe :geocoding do 
+    it "should geocode and then reverse geocode on save" do 
+      twitter_account = TwitterAccount.new(address: "3554 W Shakespeare Ave, Chicago IL 60647")
+      expect(twitter_account).to receive(:set_account_info).and_return(true)
+      twitter_account.save
+      expect(twitter_account.latitude).to be_present
+      expect(twitter_account.longitude).to be_present
+      expect(twitter_account.country).to eq('United States')
+      expect(twitter_account.city).to eq('New York')
+      expect(twitter_account.state).to eq('NY')
+      # expect(twitter_account.neighborhood).to be_present # Not in our geo specs file...
+    end
+  end
+
 end

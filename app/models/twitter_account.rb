@@ -1,14 +1,27 @@
 class TwitterAccount < ActiveRecord::Base
   scope :active, -> { where(is_active: true) }
-  scope :national, -> { where(is_national: true) }
+  scope :national, -> { active.where(is_national: true) }
   has_many :tweets
   has_one :user
   serialize :twitter_account_info
+  attr_accessor :no_geocode
 
   geocoded_by :address
-  before_save :geocode, if: lambda {
-    self.address.present? && (latitude.blank? || self.address_changed?)
+  after_validation :geocode, if: lambda {
+    !self.no_geocode && self.address.present? && (latitude.blank? || self.address_changed?)
   }
+
+  before_save :reverse_geocode, if: lambda {
+    !self.no_geocode && self.latitude.present? && (state.blank? || self.state_changed?)
+  }
+  reverse_geocoded_by :latitude, :longitude do |account,results|
+    if geo = results.first
+      account.country    = geo.country
+      account.city    = geo.city
+      account.state   = geo.state_code
+      account.neighborhood = geo.neighborhood
+    end
+  end
 
   def self.create_from_twitter_oauth(info)
     self.create({screen_name: info['info']['nickname'],
@@ -28,13 +41,13 @@ class TwitterAccount < ActiveRecord::Base
     end
   end
 
-  def self.accounts_in_proximity(bike)
-    @close_twitters = TwitterAccount.active.near(@bike, 50)
-    @close_twitters << TwitterAccount.active.where(default: true).first
+  def self.default_account
+    self.where(default: true).first  || self.national.first 
   end
 
-  def self.default_account
-    self.national.first
+  def self.default_account_for_country(c)
+    account = self.national.where(country: c).first
+    account.present? ? account : default_account
   end
 
   def twitter_account_url
@@ -57,18 +70,16 @@ class TwitterAccount < ActiveRecord::Base
 
   before_save :set_account_info
   def set_account_info
-    self.twitter_account_info ||= get_account_info
+    self.twitter_account_info ||= get_account_info 
   end
 
 
   def account_info_name
-    return nil unless twitter_account_info.present?
-    twitter_account_info[:name]
+    twitter_account_info.present? ? twitter_account_info[:name] : nil
   end
 
   def account_info_image
-    return nil unless twitter_account_info.present?
-    twitter_account_info[:profile_image_url_https]
+    twitter_account_info.present? ? twitter_account_info[:profile_image_url_https] : nil
   end
 
 end

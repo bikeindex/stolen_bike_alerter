@@ -11,6 +11,9 @@
 # Ignore the seeds for the Twitter Accounts, as it has sensitive info in it
 /db/seeds/twitter_accounts.rb
 
+# Ignore the vcr cassettes as they have sensitive info in them
+spec/cassettes/*
+
 # ignore dumps
 latest.dump
 
