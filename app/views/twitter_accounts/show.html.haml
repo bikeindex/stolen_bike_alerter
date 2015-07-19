@@ -49,7 +49,7 @@
         = f.submit "Submit", class: 'btn btn-primary'
 
 .tweets.row
-  - @account.tweets.limit(100).each do |tweet|
+  - @account.tweets.order('created_at desc').limit(100).each do |tweet|
     .col-sm-6
       .panel.panel-default
         .panel-body
