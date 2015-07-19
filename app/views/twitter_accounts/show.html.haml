@@ -3,7 +3,8 @@
     .panel-title
       %strong
         @#{@account.user.screen_name} 
-      regional tweet settings
+      = @account.is_national ? "national" : "regional"
+      tweet settings
   .panel-body
     = form_for(@account) do |f|
       .row
@@ -20,16 +21,12 @@
           .form-group
             %label{for: 'latitude'}
               Latitude
-              %small
-                probably don't edit this
-            = f.text_field :latitude, class: "form-control"
+            = f.text_field :latitude, class: "form-control", disabled: !current_user.is_admin
         .col-xs-6
           .form-group
             %label{for: 'longitude'}
               Longitude
-              %small
-                probably don't edit this
-            = f.text_field :longitude, class: "form-control"
+            = f.text_field :longitude, class: "form-control", disabled: !current_user.is_admin
 
       .form-group
         = f.label :append_block, "Additional content to add to tweets"
@@ -51,4 +48,17 @@
       .form-group
         = f.submit "Submit", class: 'btn btn-primary'
 
+.tweets.row
+  - @account.tweets.limit(100).each do |tweet|
+    .col-sm-6
+      .panel.panel-default
+        .panel-body
+          - if @account.account_info_image
+            = image_tag @account.account_info_image, class: 'pull-left'
+          %p.center-text
+            %a{ href: "https://twitter.com/#{@account.screen_name}/status/#{tweet.twitter_tweet_id}" }
+              = tweet.tweet_string
+            %br
+            %span.less-strong
+              = l tweet.created_at, format: :hour
 

@@ -1,6 +1,6 @@
 class TwitterTweeterIntegration
-  # require 'twitter'
-  # require 'geocoder'
+  require 'twitter'
+  require 'geocoder'
   require 'tempfile'
   require 'open-uri'
 
@@ -23,12 +23,16 @@ class TwitterTweeterIntegration
       display_coordinates: "true" }
     client = twitter_client_start(@close_twitters.first)
 
+    posted_tweet = nil
     if (@bike.bike_index_api_response[:photo])
       Tempfile.open(['foto', '.jpg'], nil, 'wb+') do |foto|
         foto.binmode
         foto.write open(@bike.bike_index_api_response[:photo]).read
         foto.rewind
         posted_tweet = client.update_with_media(update_str, foto, update_opts)
+        puts "POSTED TWEET!@!!!!!!"
+        puts posted_tweet
+        puts "\n\n\n"
       end
     else
       posted_tweet = client.update(update_str, update_opts)

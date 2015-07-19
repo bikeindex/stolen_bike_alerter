@@ -11,7 +11,6 @@ class BikeIndexEmailGenerator
       }.to_json,
       headers: { 'Content-Type' => 'application/json' }
     }
-    response = HTTParty.post('https://bikeindex.org/api/v1/notifications', params)
-    puts response.body
+    HTTParty.post('https://bikeindex.org/api/v1/notifications', params)
   end
 end

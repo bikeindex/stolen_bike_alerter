@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150717171906) do
+ActiveRecord::Schema.define(version: 20150719154752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,10 +77,10 @@ ActiveRecord::Schema.define(version: 20150717171906) do
   add_index "twitter_accounts", ["latitude", "longitude"], name: "index_twitter_accounts_on_latitude_and_longitude", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "twitter_uid",         default: "", null: false
-    t.string   "encrypted_password",  default: "", null: false
+    t.string   "twitter_uid",         default: "",    null: false
+    t.string   "encrypted_password",  default: "",    null: false
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",       default: 0,  null: false
+    t.integer  "sign_in_count",       default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20150717171906) do
     t.integer  "twitter_account_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_admin",            default: false, null: false
   end
 
   add_index "users", ["twitter_account_id"], name: "index_users_on_twitter_account_id", unique: true, using: :btree

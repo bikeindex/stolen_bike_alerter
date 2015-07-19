@@ -35,3 +35,8 @@ html {
     small { color: $gray-light; }
   }
 }
+
+.tweets {
+  p { padding-left: 5em; }
+  .less-strong { color: $gray-light; }
+}

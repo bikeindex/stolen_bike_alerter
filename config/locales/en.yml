@@ -21,3 +21,8 @@
 
 en:
   hello: "Hello world"
+  time:
+    formats:
+      month: "%b %d, %Y"
+      day: "%-I%P %b %d, %Y"
+      hour: "%_m.%e %-I:%M%P"
