@@ -1,7 +1,4 @@
 class Tweet < ActiveRecord::Base
-  # Attributes  twitter_account_id, twitter_tweet_id, bike_id, tweet_string
-  #             bike_index_post_hash
-
   belongs_to :twitter_account
   belongs_to :bike
   has_many :retweets

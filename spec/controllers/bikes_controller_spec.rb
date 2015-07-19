@@ -22,7 +22,7 @@ describe BikesController do
         expect(response).to be_success
       end
 
-      xit "should create a tweet on the appropriate twitter" do
+      it "should create a tweet and retweet the appropriate twitters" do
       end
     end
   end

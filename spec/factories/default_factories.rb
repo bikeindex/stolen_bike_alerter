@@ -22,8 +22,8 @@ FactoryGirl.define do
     factory :secondary_active_twitter_account do 
       no_geocode true
       screen_name ENV['SECOND_TEST_SCREEN_NAME']
-      consumer_key ENV['CONSUMER_KEY']
-      consumer_secret ENV['CONSUMER_SECRET']
+      consumer_key ENV['OMNIAUTH_CONSUMER_KEY']
+      consumer_secret ENV['OMNIAUTH_CONSUMER_SECRET']
       user_token ENV['SECOND_ACCESS_TOKEN']
       user_secret ENV['SECOND_ACCESS_TOKEN_SECRET']
       country "Canada"

@@ -5,6 +5,7 @@ describe Users::OmniauthCallbacksController do
   describe '#twitter' do    
     it "creates a user when there is no user" do
       set_omniauth_twitter
+      expect_any_instance_of(TwitterAccount).to receive(:get_account_info).and_return({})
       expect {
         post :twitter
       }.to change(User, :count).by(1)
@@ -22,6 +23,7 @@ describe Users::OmniauthCallbacksController do
       expect(user.twitter_info['credentials']['token']).to eq('fake')
       expect(user.twitter_credentials[:refresh_token]).to eq('other_fake')
       set_omniauth_twitter
+      expect_any_instance_of(TwitterAccount).to receive(:get_account_info).and_return({})
       post :twitter
       expect(response.code).to eq('302')
       user.reload

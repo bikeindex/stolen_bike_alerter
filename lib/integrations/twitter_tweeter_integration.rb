@@ -8,10 +8,10 @@ class TwitterTweeterIntegration
     @bike = bike
   end
 
-  attr_accessor :max_char, :close_twitters
+  attr_accessor :max_char, :close_twitters, :retweets
 
   def set_close_twitters
-    @close_twitters = TwitterAccount.nearby_accounts(@bike)
+    @close_twitters = @bike.twitter_accounts_in_proximity
   end
 
   def create_tweet
@@ -40,18 +40,23 @@ class TwitterTweeterIntegration
       tweet_string: update_str)
 
     retweet(posted_tweet)
+    @tweet
   end
 
   def retweet(posted_tweet)
-    retweets = [posted_tweet]
+    @retweets = [posted_tweet]
     @close_twitters.each do |twitter_name|
       next if twitter_name.id == @tweet.twitter_account_id
       client = twitter_client_start(twitter_name)
       # retweet returns an array even with scalar parameters
-      rt = client.retweet(@tweet[:twitter_tweet_id]).first
-      retweets.push(Retweet.create(twitter_tweet_id: rt.id, twitter_account_id: twitter_name.id, bike_id: @tweet.bike.id, tweet_id: @tweet.id))
+      @retweets.push(client.retweet(@tweet[:twitter_tweet_id]).first)
+      
+      Retweet.create(twitter_tweet_id: rt.id,
+        twitter_account_id: twitter_name.id,
+        bike_id: @tweet.bike.id,
+        tweet_id: @tweet.id)
     end
-    retweets
+    @retweets
   end
 
   def stolen_slug

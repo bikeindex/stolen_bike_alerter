@@ -38,6 +38,7 @@ end
 VCR.configure do |c|
   c.hook_into :webmock
   c.allow_http_connections_when_no_cassette = true
+  c.cassette_library_dir = 'spec/cassettes'
 end
 
 def omniauth_twitter_fixture

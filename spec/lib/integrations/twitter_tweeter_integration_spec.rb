@@ -54,23 +54,18 @@ describe TwitterTweeterIntegration do
     end
   end
 
-  describe :retweet do 
-    it "retweets" do 
-      fail
-    end
-  end
-
   describe :create_tweet do
     it "posts a text only tweet properly" do
-      bike_no_media = FactoryGirl.build(:bike_no_media)
-      twitter_account = FactoryGirl.build(:active_twitter_account)
-      integration = TwitterTweeterIntegration.new(bike_no_media)
-      expect(TwitterAccount).to receive(:nearby_accounts).and_return([twitter_account])
-      # pp bike_no_media.bike_index_api_response[:bikes][:stolen_record][:latitude]
-      # pp bike_no_media.bike_index_api_response[:bikes][:stolen_record][:longitude]
-      tweets = integration.create_tweet
-      expect(tweetsfirst).to be_an_instance_of(Twitter::Tweet)
+      VCR.use_cassette('twitter_tweeter_integration_create_tweet') do
+        bike_no_media = FactoryGirl.build(:bike_no_media)
+        twitter_account = FactoryGirl.build(:active_twitter_account)
+        integration = TwitterTweeterIntegration.new(bike_no_media)
+        expect(bike_no_media).to receive(:twitter_accounts_in_proximity).and_return([twitter_account])
+        integration.create_tweet
+        expect(integration.retweets.first).to be_an_instance_of(Twitter::Tweet)
+      end
     end
+
   end
 end
     
