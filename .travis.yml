@@ -2,7 +2,7 @@ language: ruby
 rvm:
 - 2.2.1
 addons:
-  postgresql: "9.4"
+  postgresql: '9.4'
 script:
 - RAILS_ENV=test bundle exec rake db:migrate && bundle exec rspec
 before_script:
@@ -26,3 +26,4 @@ env:
   - secure: Tvw3EXvoKvKK23dd1e6ODqvvmNRtiMIRktLQX7nXN7UNbfh5CQ4PAbup9SlMpGpdQ7wc8skWmY/gw9J36CoOI05gyQR9Eq4iWRoQAQxZimpxao06fjvnJHp//oXpjQhPo97rZd+VjTDWdKi/DZXsssmJc3C9zpMe7mFBxlOLZFQ=
   - secure: Xa6ni6C08Nu5g4T9lhC+3X7AJTSnt4eymsuzIKrvTh899W3PokBzdaslpuT7JhPF62uaAd1Ev6RKWsx5xboTYJPQBf6AFtz851OTN7XncLCJ2ql/uy3wuVhdpKA1g1MhMIK6WVNlJvG+3dgNpoGebFXv14zOw+i3XhtqCqHnyA0=
   - secure: MXyTUAwITn7emVoERa8aIDCAqvEx4OHACusjDUnwSJEGMijxKNqELO8Z80QFMRKTXiRlJStr6GraGh7Alvx92pybh1zKGst3CL6BIUzlNl4lzuXaVSdl7aw8KC0sW9gmmR7/6hlDrvYvnm782cETJEsMK+DPLudLDGEjdr58Gso=
+  - secure: gUwYBOSHDUnWo9E8wG5Xi4y1yAUahYHRn4oekBEEprMQFm2oPONYauiR2RRRR4j7ZOMqr71mL5EihARbs43SWRG4w09C5ypBHFJLXRfpimrYeTHY/769qiTdaeRPOjCYx3cZhTU98eIfDiqrQHIgdOcHJKe8y/9QmKxgI1u1fWk=
