@@ -1,6 +1,6 @@
 # Stolen bike alerter 
 
-<!-- [![Code Climate](https://codeclimate.com/github/adherr/stolen_bike_alerter/badges/gpa.svg)](https://codeclimate.com/github/adherr/stolen_bike_alerter) [![Test Coverage](https://codeclimate.com/github/adherr/stolen_bike_alerter/badges/coverage.svg)](https://codeclimate.com/github/adherr/stolen_bike_alerter/coverage) -->
+[![Code Climate](https://codeclimate.com/github/adherr/stolen_bike_alerter/badges/gpa.svg)](https://codeclimate.com/github/adherr/stolen_bike_alerter) [![Test Coverage](https://codeclimate.com/github/adherr/stolen_bike_alerter/badges/coverage.svg)](https://codeclimate.com/github/adherr/stolen_bike_alerter/coverage)
 
 Takes api_url POSTed to it and creates a media tweet in the
 stolenbikecity twitter account where the bike was stolen. Sends an
