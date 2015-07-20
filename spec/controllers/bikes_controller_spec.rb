@@ -21,9 +21,24 @@ describe BikesController do
         options = { api_url: "https://bikeindex.org/api/v1/bikes/3414" }
         post :create, options, format: :json
         expect(response).to be_success
+        expect(JSON.parse(response.body)['success']).to be_truthy
       end
 
-      xit "should create a tweet and retweet the appropriate twitters"
+      it "posts a media tweet and retweets properly" do
+        # Test everything! (Record it in VCR though)
+        # This will send an email and tweet to the secondary active twitter if cassette is missing
+        # 
+        VCR.use_cassette('bikes_controller_create') do
+          twitter_account = FactoryGirl.create(:secondary_active_twitter_account, default: true)
+          options = { 
+            api_url: "https://bikeindex.org/api/v1/bikes/51540",
+            key: ENV['INCOMING_REQUEST_KEY']
+          }
+          post :create, options, format: :json
+          expect(response).to be_success
+          expect(JSON.parse(response.body)['success']).to be_truthy
+        end
+      end
     end
   end
   

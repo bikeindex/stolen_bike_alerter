@@ -49,7 +49,8 @@ describe TwitterAccount do
       expect(twitter_account.twitter_account_info).to eq({stuff: 'foo'})
     end
     it "has a before_save filter" do 
-      TwitterAccount._save_callbacks.select { |cb| cb.kind.eql?(:before) }.map(&:raw_filter).include?(:set_account_info).should == true
+      expect(TwitterAccount._save_callbacks.select { |cb| cb.kind.eql?(:before) }.
+        map(&:raw_filter).include?(:set_account_info)).to be_truthy
     end
   end
 
@@ -57,13 +58,13 @@ describe TwitterAccount do
     it 'returns first national account' do 
       national_account = FactoryGirl.create(:national_active_twitter_account)
       FactoryGirl.create(:national_active_twitter_account)
-      TwitterAccount.default_account.should eq(national_account)
+      expect(TwitterAccount.default_account).to eq(national_account)
     end
   end
 
   describe :default_account_for_country do 
     it "finds national account" do 
-      default = FactoryGirl.create(:national_active_twitter_account)
+      default = FactoryGirl.create(:national_active_twitter_account, default: true)
       national = FactoryGirl.create(:secondary_active_twitter_account, is_national: true)
       national.update_attribute :country, "Australia"
       expect(TwitterAccount.default_account_for_country("Australia").id).to eq(national.id)

@@ -9,7 +9,7 @@ class BikesController < ApplicationController
     bike = Bike.create_from_api_url(api_url)
     new_tweet = TwitterTweeterIntegration.new(bike).create_tweet
     BikeIndexEmailGenerator.new.send_email_hash(new_tweet)
-    render :nothing => true
+    render json: { success: true, tweet: new_tweet }
   end
 
   private
