@@ -1,6 +1,8 @@
 language: ruby
 rvm:
 - 2.2.1
+addons: 
+- postgresql: "9.4"
 script:
 - RAILS_ENV=test bundle exec rake db:migrate && bundle exec rspec
 before_script:
@@ -8,7 +10,7 @@ before_script:
 cache: bundler
 sudo: false
 env:
-  matrix:
+  global:
   - CODECLIMATE_REPO_TOKEN=b67e61788c189f096147eb84e5d0b2f0097ebe985d17125218c1b00bfd17448c
   - secure: VNLHB9MVThYk1404TbceNDLo1cYyzBp0qfateFKcKkeCVJrhU+Z5/9u9xLuxdc2hIb41kKLZz5zvLHhWtOgCDcMFeOTQacJ8McCd9GhEaUhQNahC6EDoMT2GEG7A68cFQzWUF3RC4AxcL4LEK3wyDrDarZwTrLOlhxxHtV9buoY=
   - secure: L5I4Hp9HO/3ib13zeptZ5ZtZaHNFNsYWota1BD69LWUNUEd+aIoG8AL4fQGfqLb4yh/1z1p49fmRpA/2jR/K6Lm61kJAUxVZ1Kjb6oznP0LhQ3dyQX/cNPXjSBjGMfwKbPWzQl32bkrlB8WhixlFY2HIzRo/kiL/4MCpx8iPUjE=
