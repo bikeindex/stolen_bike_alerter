@@ -12,6 +12,9 @@ class BikesController < ApplicationController
     render json: { success: true, tweet: new_tweet }
   end
 
+  def index
+  end
+
   private
   def verify_key
     unless params[:key].present? && params[:key] == ENV['INCOMING_REQUEST_KEY']
