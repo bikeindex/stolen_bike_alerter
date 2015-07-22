@@ -12,6 +12,17 @@ describe TwitterAccountsController do
       it { should render_template(:show) }
       it { should_not set_the_flash }
     end
+    context "with user" do 
+      before do 
+        user = user_from_twitter_fixture
+        user.is_admin = true
+        sign_in user
+        get :show, id: "adsfasdfasdf"
+      end
+      it { should respond_with(:success) }
+      it { should render_template(:show) }
+      it { should_not set_the_flash }
+    end
     context "no user" do 
       before do
         get :show, id: "adsfasdfasdf"

@@ -7,6 +7,7 @@ class TwitterAccountsController < ApplicationController
   end
   
   def show
+    @account = current_user.twitter_account unless @account.present?
   end
 
   def update
