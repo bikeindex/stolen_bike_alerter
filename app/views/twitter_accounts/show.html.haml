@@ -2,11 +2,12 @@
   .panel-heading
     .panel-title
       %strong
-        @#{@account.user.screen_name} 
+        = link_to "@#{@account.screen_name}", @account.twitter_account_url
       = @account.is_national ? "national" : "regional"
       tweet settings
   .panel-body
     = form_for(@account) do |f|
+      = f.hidden_field :screen_name
       .row
         .col-xs-6
           .form-group

@@ -17,6 +17,8 @@
           \|
           %small
             = link_to "Sign out", destroy_user_session_path, method: :delete, class: "navbar-link"
+        - if current_user.is_admin
+          = link_to "Admin", twitter_accounts_path, class: 'btn btn-primary navbar-btn navbar-right'
             
       - else
         .navbar-text.navbar-right

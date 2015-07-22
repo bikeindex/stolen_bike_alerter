@@ -40,23 +40,5 @@ describe BikesController do
         end
       end
     end
-  end
-
-  describe "GET #create" do # Seems like it's intepreting requests as GET requests, 
-    context "with an :api_url" do
-      it "should return success" do
-        allow_any_instance_of(BikesController).to receive(:verify_key)
-        expect_any_instance_of(BikeIndexEmailGenerator).to receive(:send_email_hash)
-        expect_any_instance_of(TwitterTweeterIntegration).to receive(:create_tweet)
-        options = { api_url: "https://bikeindex.org/api/v1/bikes/3414" }
-        get 'create', options, format: :json
-        expect(response).to be_success
-        expect(JSON.parse(response.body)['success']).to be_truthy
-      end
-    end
-  end
-  
+  end  
 end
-
-
-

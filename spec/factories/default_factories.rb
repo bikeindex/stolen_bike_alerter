@@ -79,7 +79,7 @@ FactoryGirl.define do
   
   factory :user_with_active_twitter_account, class: User do 
     twitter_info JSON.parse(File.read(Rails.root.join("spec/fixtures/omniauth_twitter_response.json")))
-    association :twitter_account, factory: :active_twitter_account
+    association :twitter_account, factory: :national_active_twitter_account
   end
   
 end

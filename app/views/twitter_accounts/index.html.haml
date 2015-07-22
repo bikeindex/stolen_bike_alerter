@@ -1,0 +1,44 @@
+.panel.panel-default
+  .panel-heading
+    .panel-title
+      %strong
+        Admin overview
+  .panel-body
+    %table.table.table-bordered.table-striped.table-hover
+      %thead
+        %th
+          Created at
+        %th
+          Screen name
+        %th
+          Address
+        %th
+          Active?
+        %th
+          Tweets
+        %th
+          Retweets
+        %th
+          Last tweet
+      %tbody
+        - @accounts.each do |account|
+          %tr
+            %td
+              = l account.created_at, format: :hour
+            %td
+              = link_to account.screen_name, twitter_account_path(account.screen_name)
+            %td
+              = account.address
+              %br
+              %small.less-strong
+                #{account.city}, #{account.state} - #{account.neighborhood}. #{account.country}
+            %td
+              = "&#x2713;".html_safe if account.is_active
+            %td
+              = account.tweets.count
+            %td
+              - if account.retweets
+                = account.retweets.count
+            %td
+              - if account.tweets.last
+                = l account.tweets.last.created_at, format: :hour

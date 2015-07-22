@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   end
 
   def screen_name
-    twitter_info['info']['nickname']
+    twitter_info && twitter_info['info'] && twitter_info['info']['nickname']
   end
 
   def twitter_url

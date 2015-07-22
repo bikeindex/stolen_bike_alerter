@@ -7,6 +7,15 @@
 
 .padded { padding-top: 30px; }
 
+.less-strong { color: $gray-light; }
+
+.admin-highlight {
+  @extend .bg-primary;
+  margin: 0 1em;
+  padding: .25em .5em;
+  display: inline-block;
+}
+
 .auth-twitter-butt {
   font-size: 200%;
   small { 
@@ -38,5 +47,4 @@ html {
 
 .tweets {
   p { padding-left: 5em; }
-  .less-strong { color: $gray-light; }
 }

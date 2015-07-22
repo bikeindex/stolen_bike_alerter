@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe TwitterAccount do
   it { should have_many :tweets }
+  it { should have_many :retweets }
   it { should have_one  :user }
   it { should serialize :twitter_account_info }
 

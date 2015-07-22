@@ -2,6 +2,7 @@ class TwitterAccount < ActiveRecord::Base
   scope :active, -> { where(is_active: true) }
   scope :national, -> { active.where(is_national: true) }
   has_many :tweets
+  has_many :retweets
   has_one :user
   serialize :twitter_account_info
   attr_accessor :no_geocode
