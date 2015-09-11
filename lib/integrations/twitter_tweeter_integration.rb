@@ -62,7 +62,7 @@ class TwitterTweeterIntegration
   end
 
   def stolen_slug
-    "STOLEN -"
+    @bike.bike_index_api_response[:serial].present? ? "STOLEN -" : "FOUND -"
   end
 
   def set_max_char

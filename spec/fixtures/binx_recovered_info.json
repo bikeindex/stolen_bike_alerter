@@ -1,0 +1,64 @@
+{
+  "id": 56990,
+  "serial": null,
+  "registration_created_at": "2015-09-04T22:22:06-05:00",
+  "registration_updated_at": "2015-09-11T00:00:24-05:00",
+  "url": "https://bikeindex.org/bikes/56990",
+  "api_url": "https://bikeindex.org/api/v1/bikes/56990",
+  "manufacturer_name": "Novara",
+  "manufacturer_id": 246,
+  "frame_colors": [
+    "Green"
+  ],
+  "paint_description": null,
+  "stolen": true,
+  "name": "Torero",
+  "year": null,
+  "frame_model": "Torero 29\"",
+  "frame_size": "",
+  "description": "Has some added bling, identify what's added and it could be proof of ownership too.",
+  "rear_tire_narrow": false,
+  "front_tire_narrow": false,
+  "photo": null,
+  "thumb": null,
+  "title": "Novara Torero 29\" tall bike(green)",
+  "type_of_cycle": "Tall Bike",
+  "images": [],
+  "rear_wheel_size": {
+    "iso_bsd": 622,
+    "name": "700 C",
+    "description": "700 C, 29in mountain bikes (Standard size)",
+    "popularity": "Standard"
+  },
+  "front_wheel_size": {
+    "iso_bsd": 622,
+    "name": "700 C",
+    "description": "700 C, 29in mountain bikes (Standard size)",
+    "popularity": "Standard"
+  },
+  "handlebar_type": null,
+  "frame_material": null,
+  "front_gear_type": {
+    "name": "3",
+    "slug": "3"
+  },
+  "rear_gear_type": {
+    "name": "9",
+    "slug": "9"
+  },
+  "stolen_record": {
+    "date_stolen": "2015-08-26T01:00:00-05:00",
+    "location": "Tigard?",
+    "latitude": 45.4312294,
+    "longitude": -122.7714861,
+    "theft_description": "It was left abandoned inside my fence close to a pedestrian walkway. Very near Tigard high school.\r\nJust tell me the last two digits of the serial number as proof of ownership or show me a receipt. We can also take it to the local REI where it was purchased to verify you are the rightful owner.",
+    "locking_description": null,
+    "lock_defeat_description": null,
+    "police_report_number": null,
+    "police_report_department": null,
+    "created_at": "2015-09-04T22:22:07-05:00",
+    "create_open311": false,
+    "id": 32581
+  },
+  "components": []
+}

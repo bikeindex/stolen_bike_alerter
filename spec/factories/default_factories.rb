@@ -70,6 +70,18 @@ FactoryGirl.define do
       latitude 37.770506
       longitude -122.436556
     end
+    factory :bike_recovered do
+      no_geocode true
+      bike_index_bike_id 56990
+      bike_index_api_url "https://bikeindex.org/api/v1/bikes/56990"
+      bike_index_api_response JSON.parse(File.read(Rails.root.join("spec/fixtures/binx_recovered_info.json"))).with_indifferent_access
+      country "United States"
+      city "San Francisco"
+      neighborhood "Lower Haight"
+      state "CA"
+      latitude 45.4312294
+      longitude -122.7714861
+    end
   end
 
   factory :user do 
