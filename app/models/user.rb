@@ -40,8 +40,11 @@ class User < ActiveRecord::Base
   end
 
   def find_or_create_associated_twitter_account
-    return account_by_screen_name if account_by_screen_name.present?
-    TwitterAccount.create_from_twitter_oauth(twitter_info)
+    if account_by_screen_name.present?
+      account_by_screen_name.update_attributes(TwitterAccount.attrs_from_user_info(twitter_info))
+    else
+      TwitterAccount.create_from_twitter_oauth(twitter_info)
+    end
   end
 
   def account_by_screen_name

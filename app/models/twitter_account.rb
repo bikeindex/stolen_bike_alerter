@@ -24,14 +24,19 @@ class TwitterAccount < ActiveRecord::Base
     end
   end
 
-  def self.create_from_twitter_oauth(info)
-    self.create({screen_name: info['info']['nickname'],
+  def self.attrs_from_user_info(info)
+    {
+      screen_name: info['info']['nickname'],
       address: info['info']['location'],
       consumer_key: ENV['OMNIAUTH_CONSUMER_KEY'],
       consumer_secret: ENV['OMNIAUTH_CONSUMER_SECRET'],
       user_token: info['credentials']['token'],
       user_secret: info['credentials']['secret']
-    })
+    }
+  end
+
+  def self.create_from_twitter_oauth(info)
+    self.create(attrs_from_user_info(info))
   end
 
   def self.fuzzy_screen_name_find(n)
