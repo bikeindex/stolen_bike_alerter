@@ -2,12 +2,6 @@ require 'spec_helper'
 
 describe Bike do
 
-  it { should have_one :tweet }
-  it { should have_many :retweets }
-  it { should validate_presence_of :bike_index_api_url }
-  it { should validate_presence_of :bike_index_api_response }
-  it { should serialize :bike_index_api_response }
-
   describe :create_from_api_url do 
     it "creates a bike from an api url" do 
       fixture = JSON.parse(File.read(Rails.root.join("spec/fixtures/binx_info.json")))

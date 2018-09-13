@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe User do
-  it { should belong_to :twitter_account }
 
   describe :twitter_credentials do 
     it "grabs and makes indifferent" do 

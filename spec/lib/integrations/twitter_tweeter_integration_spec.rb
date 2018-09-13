@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TwitterTweeterIntegration do
+describe 'TwitterTweeterIntegration' do
 
   describe :twitter_client_start do
     it "returns a functional Twitter::REST::Client" do

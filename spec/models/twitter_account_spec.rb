@@ -1,11 +1,6 @@
 require 'spec_helper'
 
 describe TwitterAccount do
-  it { should have_many :tweets }
-  it { should have_many :retweets }
-  it { should have_one  :user }
-  it { should serialize :twitter_account_info }
-
   describe 'geocoding' do 
     it "geocodes madison square gardens correctly without hitting API" do
       twitter_account = TwitterAccount.new

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe BikeIndexEmailGenerator do
+describe 'BikeIndexEmailGenerator' do
   describe :create_email do
     it "doesn't mention retweets when there aren't any" do
       VCR.use_cassette('bike_index_email_generator') do

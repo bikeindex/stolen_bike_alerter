@@ -1,13 +1,6 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
-# Pick the frameworks you want:
-require "active_model/railtie"
-require "active_record/railtie"
-require "action_controller/railtie"
-require "action_mailer/railtie"
-require "action_view/railtie"
-require "sprockets/railtie"
-# require "rails/test_unit/railtie"
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -20,7 +13,11 @@ module StolenBikeAlerter
     # -- all .rb files in that directory are automatically loaded.
 
     # Custom directories with classes and modules you want to be autoloadable.
-    config.autoload_paths += %W(#{config.root}/lib #{config.root}/lib/jobs #{config.root}/lib/integrations)
+    # config.autoload_paths += %w[#{config.root}/lib/jobs #{config.root}/lib/integrations]
+
+    Dir[Rails.root.join('lib/jobs'), Rails.root.join('lib/integrations')].each do |path|
+      config.autoload_paths << path
+    end
 
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
