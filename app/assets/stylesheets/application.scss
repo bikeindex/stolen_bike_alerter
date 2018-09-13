@@ -1,50 +1,65 @@
 /*= require_self */
-/*= require devise_bootstrap_views */
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-.main-container { padding-top: 40px; }
+.main-container {
+  padding-top: 40px;
+}
 
-.padded { padding-top: 30px; }
+.padded {
+  padding-top: 30px;
+}
 
-.less-strong { color: $gray-light; }
+.less-strong {
+  color: $gray-light;
+}
 
 .admin-highlight {
   @extend .bg-primary;
   margin: 0 1em;
-  padding: .25em .5em;
+  padding: 0.25em 0.5em;
   display: inline-block;
 }
 
 .auth-twitter-butt {
   font-size: 200%;
-  small { 
+  small {
     display: block;
     font-size: 40%;
   }
 }
 
-.jumbotron, .panel, .alert {
-  box-shadow: 1px 1px 3px rgba(#777, .2);
+.jumbotron,
+.panel,
+.alert {
+  box-shadow: 1px 1px 3px rgba(#777, 0.2);
 }
 
-html { 
-  background: url("stolenbg_20_black_overlay.png") no-repeat center center fixed; 
+html {
+  background: url("stolenbg_20_black_overlay.png") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  body { background: none; }
+  body {
+    background: none;
+  }
 }
 
 .panel {
-  form { font-size: 120%; }
+  form {
+    font-size: 120%;
+  }
   label {
     font-weight: normal;
-    small { color: $gray-light; }
+    small {
+      color: $gray-light;
+    }
   }
 }
 
 .tweets {
-  p { padding-left: 5em; }
+  p {
+    padding-left: 5em;
+  }
 }

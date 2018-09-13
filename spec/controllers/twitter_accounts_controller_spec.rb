@@ -27,7 +27,7 @@ describe TwitterAccountsController do
       before do
         get :show, id: "adsfasdfasdf"
       end
-      it { should redirect_to(user_omniauth_authorize_path(:twitter)) }
+      it { should redirect_to(omniauth_authorize_path("user", :twitter)) }
       it { should_not set_the_flash }
     end
   end  
@@ -93,7 +93,7 @@ describe TwitterAccountsController do
       before do
         get :index
       end
-      it { should redirect_to(user_omniauth_authorize_path(:twitter)) }
+      it { should redirect_to(omniauth_authorize_path("user", :twitter)) }
       it { should_not set_the_flash }
     end
   end  

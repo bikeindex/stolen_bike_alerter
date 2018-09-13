@@ -22,5 +22,5 @@
             
       - else
         .navbar-text.navbar-right
-          = link_to "Sign in", user_omniauth_authorize_path(:twitter), class: 'navbar-link'
-        = link_to "Connect Twitter account", user_omniauth_authorize_path(:twitter), class: 'btn btn-default navbar-btn navbar-right'
+          = link_to "Sign in", omniauth_authorize_path("user", :twitter), class: 'navbar-link'
+        = link_to "Connect Twitter account", omniauth_authorize_path("user", :twitter), class: 'btn btn-default navbar-btn navbar-right'
