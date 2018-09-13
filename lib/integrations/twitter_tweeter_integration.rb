@@ -32,7 +32,11 @@ class TwitterTweeterIntegration
         posted_tweet = client.update_with_media(update_str, foto, update_opts)
       end
     else
-      posted_tweet = client.update(update_str, update_opts)
+      begin
+        posted_tweet = client.update(update_str, update_opts)
+      rescue Twitter::Error::Unauthorized => e
+        raise Twitter::Error::Unauthorized, "#{@close_twitters.first.screen_name} #{e}"
+      end
     end
 
     @tweet = Tweet.create(twitter_tweet_id: posted_tweet.id,

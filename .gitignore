@@ -16,6 +16,7 @@ spec/cassettes/*
 
 # ignore dumps
 latest.dump
+heroku*.dump
 
 # Ignore rvm stuff
 .ruby-*
