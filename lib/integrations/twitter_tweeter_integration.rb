@@ -53,14 +53,18 @@ class TwitterTweeterIntegration
     @close_twitters.each do |twitter_name|
       next if twitter_name.id == @tweet.twitter_account_id
       client = twitter_client_start(twitter_name)
-      # retweet returns an array even with scalar parameters
-      posted_retweet = client.retweet(@tweet[:twitter_tweet_id]).first
-      @retweets.push(posted_retweet)
-      retweet = Retweet.create(twitter_tweet_id: posted_retweet.id,
-        twitter_account_id: twitter_name.id,
-        bike_id: @tweet.bike.id,
-        tweet_id: @tweet.id)
-      raise StandardError, retweet.errors.full_messages.to_sentence unless retweet.id.present?
+      begin
+        # retweet returns an array even with scalar parameters
+        posted_retweet = client.retweet(@tweet[:twitter_tweet_id]).first
+        @retweets.push(posted_retweet)
+        retweet = Retweet.create(twitter_tweet_id: posted_retweet.id,
+          twitter_account_id: twitter_name.id,
+          bike_id: @tweet.bike.id,
+          tweet_id: @tweet.id)
+        raise StandardError, retweet.errors.full_messages.to_sentence unless retweet.id.present?
+      rescue Twitter::Error::Unauthorized => e
+        raise Twitter::Error::Unauthorized, "#{@close_twitters.first.screen_name} #{e}"
+      end
     end
     @retweets
   end
