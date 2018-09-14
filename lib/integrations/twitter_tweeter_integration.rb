@@ -24,20 +24,21 @@ class TwitterTweeterIntegration
     client = twitter_client_start(@close_twitters.first)
 
     posted_tweet = nil # If this isn't instantiated, it isn't accessible outside media block.
-    if (@bike.bike_index_api_response[:photo])
-      Tempfile.open('foto.jpg') do |foto|
-        foto.binmode
-        foto.write open(@bike.bike_index_api_response[:photo]).read
-        foto.rewind
-        posted_tweet = client.update_with_media(update_str, foto, update_opts)
+    begin
+      if (@bike.bike_index_api_response[:photo])
+        Tempfile.open('foto.jpg') do |foto|
+          foto.binmode
+          foto.write open(@bike.bike_index_api_response[:photo]).read
+          foto.rewind
+          posted_tweet = client.update_with_media(update_str, foto, update_opts)
+        end
+      else
+          posted_tweet = client.update(update_str, update_opts)
       end
-    else
-      begin
-        posted_tweet = client.update(update_str, update_opts)
-      rescue Twitter::Error::Unauthorized => e
-        raise Twitter::Error::Unauthorized, "#{@close_twitters.first.screen_name} #{e}"
-      end
+    rescue Twitter::Error::Unauthorized => e
+      raise Twitter::Error::Unauthorized, "#{@close_twitters.first.screen_name} #{e}"
     end
+
 
     @tweet = Tweet.create(twitter_tweet_id: posted_tweet.id,
       twitter_account_id: @close_twitters.first[:id], # Maybe use shift here?
