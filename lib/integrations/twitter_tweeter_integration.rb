@@ -14,6 +14,8 @@ class TwitterTweeterIntegration
     @close_twitters = @bike.twitter_accounts_in_proximity
   end
 
+  # To manually send a tweet (e.g. if authentication failed)
+  # TwitterTweeterIntegration.new(Bike.find_by_bike_index_bike_id(XXX)).create_tweet
   def create_tweet
     set_close_twitters
     update_str = build_bike_status

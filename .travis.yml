@@ -9,6 +9,10 @@ before_script:
 - psql -c 'create database stolen_bike_alerter_test' -U postgres
 cache: bundler
 sudo: false
+notifications:
+  email:
+    on_success: never
+     on_failure: never
 env:
   global:
   - CODECLIMATE_REPO_TOKEN=b67e61788c189f096147eb84e5d0b2f0097ebe985d17125218c1b00bfd17448c
