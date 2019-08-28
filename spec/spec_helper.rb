@@ -1,12 +1,12 @@
 # Check if codeclimate token is set so we don't get notified if it's absent
-if ENV['CODECLIMATE_REPO_TOKEN'] 
+if ENV["CODECLIMATE_REPO_TOKEN"]
   require "codeclimate-test-reporter"
   CodeClimate::TestReporter.start
 end
 
-ENV["RAILS_ENV"] ||= 'test'
+ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../../config/environment", __FILE__)
-require 'rspec/rails'
+require "rspec/rails"
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -43,7 +43,7 @@ end
 VCR.configure do |c|
   c.hook_into :webmock
   c.allow_http_connections_when_no_cassette = true
-  c.cassette_library_dir = 'spec/cassettes'
+  c.cassette_library_dir = "spec/cassettes"
 end
 
 def omniauth_twitter_fixture
@@ -52,10 +52,10 @@ end
 
 def user_from_twitter_fixture
   fixture = omniauth_twitter_fixture
-  User.from_omniauth(fixture['uid'], fixture)
+  User.from_omniauth(fixture["uid"], fixture)
 end
 
-def set_omniauth_twitter(auth_hash=omniauth_twitter_fixture)
+def set_omniauth_twitter(auth_hash = omniauth_twitter_fixture)
   OmniAuth.config.test_mode = true
   OmniAuth.config.add_mock(:twitter, omniauth_twitter_fixture)
   @request.env["devise.mapping"] = Devise.mappings[:user]

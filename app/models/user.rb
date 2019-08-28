@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   def self.from_omniauth(uid, auth)
     where(twitter_uid: uid).first_or_create do |user|
       user.twitter_info = auth.to_h
-      user.password = Devise.friendly_token[0,20]
+      user.password = Devise.friendly_token[0, 20]
     end
   end
 
@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   end
 
   def screen_name
-    twitter_info && twitter_info['info'] && twitter_info['info']['nickname']
+    twitter_info && twitter_info["info"] && twitter_info["info"]["nickname"]
   end
 
   def twitter_url
@@ -29,10 +29,10 @@ class User < ActiveRecord::Base
   end
 
   def twitter_credentials
-    (twitter_info['credentials'] || {}).with_indifferent_access
+    (twitter_info["credentials"] || {}).with_indifferent_access
   end
 
-  def update_twitter_info(info=twitter_info)
+  def update_twitter_info(info = twitter_info)
     new_info = info.to_h
     self.update_attribute :twitter_info, new_info unless twitter_info == new_info
     account = find_or_create_associated_twitter_account

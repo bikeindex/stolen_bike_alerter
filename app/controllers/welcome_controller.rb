@@ -5,5 +5,4 @@ class WelcomeController < ApplicationController
     redirect_to twitter_account_path(current_user.screen_name) and return if current_user.present?
     @noheader = true
   end
-
 end

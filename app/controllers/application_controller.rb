@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   def ensure_authorized_user
     unless current_user.present?
-      session[:sandr] ||= request.url unless controller_name.match('session')
+      session[:sandr] ||= request.url unless controller_name.match("session")
       redirect_to omniauth_authorize_path("user", :twitter) and return
     end
   end
@@ -23,7 +23,6 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource_or_scope)
-    session[:sandr].present? ? session.delete(:sandr) : twitter_account_url('twitters')
+    session[:sandr].present? ? session.delete(:sandr) : twitter_account_url("twitters")
   end
-
 end

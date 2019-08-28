@@ -17,82 +17,81 @@ ActiveRecord::Schema.define(version: 20150719154752) do
   enable_extension "plpgsql"
 
   create_table "bikes", force: true do |t|
-    t.string   "bike_index_api_url"
-    t.text     "bike_index_api_response"
+    t.string "bike_index_api_url"
+    t.text "bike_index_api_response"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "city"
-    t.string   "state"
-    t.string   "neighborhood"
-    t.float    "latitude"
-    t.float    "longitude"
-    t.integer  "bike_index_bike_id"
-    t.string   "country"
+    t.string "city"
+    t.string "state"
+    t.string "neighborhood"
+    t.float "latitude"
+    t.float "longitude"
+    t.integer "bike_index_bike_id"
+    t.string "country"
   end
 
   create_table "retweets", force: true do |t|
-    t.integer  "twitter_account_id"
-    t.integer  "tweet_id"
-    t.integer  "twitter_tweet_id",   limit: 8
+    t.integer "twitter_account_id"
+    t.integer "tweet_id"
+    t.integer "twitter_tweet_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "bike_id"
+    t.integer "bike_id"
   end
 
   create_table "tweets", force: true do |t|
-    t.integer  "twitter_account_id"
-    t.integer  "twitter_tweet_id",     limit: 8
+    t.integer "twitter_account_id"
+    t.integer "twitter_tweet_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "bike_id"
-    t.text     "tweet_string"
-    t.text     "bike_index_post_hash"
+    t.integer "bike_id"
+    t.text "tweet_string"
+    t.text "bike_index_post_hash"
   end
 
   add_index "tweets", ["twitter_account_id"], name: "index_tweets_on_twitter_account_id", using: :btree
 
   create_table "twitter_accounts", force: true do |t|
-    t.string   "screen_name"
-    t.float    "latitude"
-    t.float    "longitude"
-    t.string   "consumer_key"
-    t.string   "consumer_secret"
-    t.string   "user_token"
-    t.string   "user_secret"
+    t.string "screen_name"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "consumer_key"
+    t.string "consumer_secret"
+    t.string "user_token"
+    t.string "user_secret"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "address"
-    t.boolean  "is_national",          default: false, null: false
-    t.text     "twitter_account_info"
-    t.string   "language"
-    t.boolean  "is_active",            default: false, null: false
-    t.string   "append_block"
-    t.boolean  "default",              default: false, null: false
-    t.string   "country"
-    t.string   "city"
-    t.string   "state"
-    t.string   "neighborhood"
+    t.string "address"
+    t.boolean "is_national", default: false, null: false
+    t.text "twitter_account_info"
+    t.string "language"
+    t.boolean "is_active", default: false, null: false
+    t.string "append_block"
+    t.boolean "default", default: false, null: false
+    t.string "country"
+    t.string "city"
+    t.string "state"
+    t.string "neighborhood"
   end
 
   add_index "twitter_accounts", ["latitude", "longitude"], name: "index_twitter_accounts_on_latitude_and_longitude", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "twitter_uid",         default: "",    null: false
-    t.string   "encrypted_password",  default: "",    null: false
+    t.string "twitter_uid", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",       default: 0,     null: false
+    t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.inet     "current_sign_in_ip"
-    t.inet     "last_sign_in_ip"
-    t.json     "twitter_info"
-    t.integer  "twitter_account_id"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
+    t.json "twitter_info"
+    t.integer "twitter_account_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_admin",            default: false, null: false
+    t.boolean "is_admin", default: false, null: false
   end
 
   add_index "users", ["twitter_account_id"], name: "index_users_on_twitter_account_id", unique: true, using: :btree
   add_index "users", ["twitter_uid"], name: "index_users_on_twitter_uid", unique: true, using: :btree
-
 end

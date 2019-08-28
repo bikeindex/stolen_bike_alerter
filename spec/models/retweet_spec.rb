@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Retweet, :type => :model do
   #   describe :validations do

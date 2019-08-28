@@ -5,14 +5,14 @@ class TwitterAccountsController < ApplicationController
     redirect_to twitter_account_path(id: current_user.screen_name) and return unless current_user.is_admin
     @accounts = TwitterAccount.order(created_at: :desc)
   end
-  
+
   def show
     @account = current_user.twitter_account unless @account.present?
   end
 
   def update
     if @account.update(account_params)
-      redirect_to twitter_account_path(id: @account.screen_name), notice: 'Account was successfully updated.'
+      redirect_to twitter_account_path(id: @account.screen_name), notice: "Account was successfully updated."
     else
       render twitter_account(id: @account.screen_name), error: @account.errors.messages
     end
@@ -32,7 +32,6 @@ class TwitterAccountsController < ApplicationController
 
   def account_params
     params.require(:twitter_account).permit(:is_active, :append_block, :address,
-      :latitude, :longitude)
+                                            :latitude, :longitude)
   end
-
 end

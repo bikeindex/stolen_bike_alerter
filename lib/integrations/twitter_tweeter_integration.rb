@@ -1,8 +1,8 @@
 class TwitterTweeterIntegration
-  require 'twitter'
-  require 'geocoder'
-  require 'tempfile'
-  require 'open-uri'
+  require "twitter"
+  require "geocoder"
+  require "tempfile"
+  require "open-uri"
 
   def initialize(bike)
     @bike = bike
@@ -22,30 +22,30 @@ class TwitterTweeterIntegration
     update_opts = {
       lat: @bike.bike_index_api_response[:stolen_record][:latitude],
       long: @bike.bike_index_api_response[:stolen_record][:longitude],
-      display_coordinates: "true" }
+      display_coordinates: "true",
+    }
     client = twitter_client_start(@close_twitters.first)
 
     posted_tweet = nil # If this isn't instantiated, it isn't accessible outside media block.
     begin
       if (@bike.bike_index_api_response[:photo])
-        Tempfile.open('foto.jpg') do |foto|
+        Tempfile.open("foto.jpg") do |foto|
           foto.binmode
           foto.write open(@bike.bike_index_api_response[:photo]).read
           foto.rewind
           posted_tweet = client.update_with_media(update_str, foto, update_opts)
         end
       else
-          posted_tweet = client.update(update_str, update_opts)
+        posted_tweet = client.update(update_str, update_opts)
       end
     rescue Twitter::Error::Unauthorized => e
       raise Twitter::Error::Unauthorized, "#{@close_twitters.first.screen_name} #{e}"
     end
 
-
     @tweet = Tweet.create(twitter_tweet_id: posted_tweet.id,
-      twitter_account_id: @close_twitters.first[:id], # Maybe use shift here?
-      bike_id: @bike.id,
-      tweet_string: update_str)
+                          twitter_account_id: @close_twitters.first[:id], # Maybe use shift here?
+                          bike_id: @bike.id,
+                          tweet_string: update_str)
 
     retweet(posted_tweet)
     @tweet
@@ -61,9 +61,9 @@ class TwitterTweeterIntegration
         posted_retweet = client.retweet(@tweet[:twitter_tweet_id]).first
         @retweets.push(posted_retweet)
         retweet = Retweet.create(twitter_tweet_id: posted_retweet.id,
-          twitter_account_id: twitter_name.id,
-          bike_id: @tweet.bike.id,
-          tweet_id: @tweet.id)
+                                 twitter_account_id: twitter_name.id,
+                                 bike_id: @tweet.bike.id,
+                                 tweet_id: @tweet.id)
         raise StandardError, retweet.errors.full_messages.to_sentence unless retweet.id.present?
       rescue Twitter::Error::Unauthorized => e
         raise Twitter::Error::Unauthorized, "#{@close_twitters.first.screen_name} #{e}"
@@ -83,7 +83,7 @@ class TwitterTweeterIntegration
     tweet_length = 140
     https_length = 23
     media_length = 23
-    
+
     @max_char = tweet_length - https_length - stolen_slug.size - 3 # spaces between slugs
     @max_char -= @bike.bike_index_api_response[:photo] ? media_length : 0
   end
@@ -119,7 +119,7 @@ class TwitterTweeterIntegration
     if color.start_with?("Silver")
       color.replace "Gray"
     elsif color.start_with?("Stickers")
-      color.replace ''
+      color.replace ""
     end
 
     manufacturer = @bike.bike_index_api_response[:manufacturer_name]
@@ -149,9 +149,9 @@ class TwitterTweeterIntegration
 
   def twitter_client_start(twitter_account)
     Twitter::REST::Client.new do |config|
-      config.consumer_key        = twitter_account[:consumer_key]
-      config.consumer_secret     = twitter_account[:consumer_secret]
-      config.access_token        = twitter_account[:user_token]
+      config.consumer_key = twitter_account[:consumer_key]
+      config.consumer_secret = twitter_account[:consumer_secret]
+      config.access_token = twitter_account[:user_token]
       config.access_token_secret = twitter_account[:user_secret]
     end
   end

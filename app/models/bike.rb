@@ -10,11 +10,11 @@ class Bike < ActiveRecord::Base
   ssl_version :TLSv1
 
   after_validation :reverse_geocode
-  reverse_geocoded_by :latitude, :longitude do |bike,results|
+  reverse_geocoded_by :latitude, :longitude do |bike, results|
     if !bike.no_geocode && geo = results.first
-      bike.country    = geo.country
-      bike.city    = geo.city
-      bike.state   = geo.state_code
+      bike.country = geo.country
+      bike.city = geo.city
+      bike.state = geo.state_code
       bike.neighborhood = geo.neighborhood
     end
   end
@@ -23,16 +23,15 @@ class Bike < ActiveRecord::Base
     bike_id = binx_id_from_url(api_url)
     api_response = get_api_response(bike_id).with_indifferent_access
     self.create(bike_index_api_url: api_v1_url_from_binx_id(bike_id).to_s,
-      bike_index_bike_id: bike_id,
-      bike_index_api_response: api_response,
-      latitude: api_response[:stolen_record][:latitude], 
-      longitude: api_response[:stolen_record][:longitude],
-    )
+                bike_index_bike_id: bike_id,
+                bike_index_api_response: api_response,
+                latitude: api_response[:stolen_record][:latitude],
+                longitude: api_response[:stolen_record][:longitude])
   end
 
   def self.get_api_response(bike_id)
     uri = api_v1_url_from_binx_id(bike_id)
-    JSON.parse(HTTParty.get(uri).body)['bikes']
+    JSON.parse(HTTParty.get(uri).body)["bikes"]
   end
 
   def self.binx_id_from_url(api_url)
@@ -43,7 +42,7 @@ class Bike < ActiveRecord::Base
     "https://bikeindex.org/api/v1/bikes/#{bike_id}"
   end
 
-  def is_api_v1 
+  def is_api_v1
     bike_index_api_url.match(/api\/v1\//i).present?
   end
 
@@ -51,5 +50,4 @@ class Bike < ActiveRecord::Base
     default = TwitterAccount.default_account_for_country(country)
     TwitterAccount.active.near(self, 50).where.not(id: default.id) << default
   end
-
 end

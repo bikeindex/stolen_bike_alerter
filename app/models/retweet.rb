@@ -6,5 +6,4 @@ class Retweet < ActiveRecord::Base
   validates_presence_of :twitter_account_id
   validates_presence_of :tweet_id
   validates_presence_of :bike_id
-
 end

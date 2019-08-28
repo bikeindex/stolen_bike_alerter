@@ -1,7 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-describe 'TwitterTweeterIntegration' do
-
+describe "TwitterTweeterIntegration" do
   describe :twitter_client_start do
     it "returns a functional Twitter::REST::Client" do
       @bike_no_media = FactoryGirl.build(:bike_with_binx)
@@ -12,7 +11,7 @@ describe 'TwitterTweeterIntegration' do
   end
 
   describe :build_bike_status do
-    context "stolen bike" do 
+    context "stolen bike" do
       before(:each) do
         @bike_no_media = FactoryGirl.build(:bike_no_media)
         @default_account = FactoryGirl.build(:secondary_active_twitter_account, default: true)
@@ -36,7 +35,7 @@ describe 'TwitterTweeterIntegration' do
 
       it "creates correct string with append block" do
         @bike_no_media.bike_index_api_response["frame_model"] = "930"
-        @twitter_account.append_block = '#bikeParty'
+        @twitter_account.append_block = "#bikeParty"
         tti = TwitterTweeterIntegration.new(@bike_no_media)
         tti.instance_variable_set(:@close_twitters, [@twitter_account])
         status = tti.build_bike_status
@@ -45,7 +44,7 @@ describe 'TwitterTweeterIntegration' do
       end
 
       it "creates correct string without append block if string is too long" do
-        @twitter_account.append_block = '#bikeParty'
+        @twitter_account.append_block = "#bikeParty"
         @bike_no_media.bike_index_api_response["frame_model"] = "Large and sweet MTB, a much longer frame model"
         tti = TwitterTweeterIntegration.new(@bike_no_media)
         tti.instance_variable_set(:@close_twitters, [@twitter_account])
@@ -55,12 +54,12 @@ describe 'TwitterTweeterIntegration' do
       end
     end
 
-    context "recovered bike" do 
+    context "recovered bike" do
       it "creates correct string without append block if string is too long" do
         @bike_no_media = FactoryGirl.build(:bike_recovered)
         @default_account = FactoryGirl.build(:secondary_active_twitter_account, default: true)
         @twitter_account = FactoryGirl.build(:active_twitter_account)
-        @twitter_account.append_block = '#bikeParty'
+        @twitter_account.append_block = "#bikeParty"
         tti = TwitterTweeterIntegration.new(@bike_no_media)
         tti.instance_variable_set(:@close_twitters, [@twitter_account])
         status = tti.build_bike_status
@@ -72,7 +71,7 @@ describe 'TwitterTweeterIntegration' do
 
   describe :create_tweet do
     it "posts a text only tweet properly" do
-      VCR.use_cassette('twitter_tweeter_integration_create_tweet') do
+      VCR.use_cassette("twitter_tweeter_integration_create_tweet") do
         bike_no_media = FactoryGirl.build(:bike_no_media)
         twitter_account = FactoryGirl.build(:active_twitter_account, id: 99)
         integration = TwitterTweeterIntegration.new(bike_no_media)
@@ -82,20 +81,18 @@ describe 'TwitterTweeterIntegration' do
       end
     end
     it "creates a media tweet with retweets" do
-      VCR.use_cassette('twitter_tweeter_integration_create_retweet') do
+      VCR.use_cassette("twitter_tweeter_integration_create_retweet") do
         bike_no_media = FactoryGirl.create(:bike_with_binx)
         twitter_account = FactoryGirl.build(:active_twitter_account, id: 99)
         secondary_twitter_account = FactoryGirl.build(:secondary_active_twitter_account, id: 9)
         integration = TwitterTweeterIntegration.new(bike_no_media)
         close_twitters = [twitter_account, secondary_twitter_account]
         expect(bike_no_media).to receive(:twitter_accounts_in_proximity).and_return([twitter_account, secondary_twitter_account])
-        expect{
+        expect {
           integration.create_tweet
-        }.to change{Retweet.count}.by(1)
+        }.to change { Retweet.count }.by(1)
         expect(integration.retweets.first).to be_an_instance_of(Twitter::Tweet)
       end
     end
   end
-
 end
-    

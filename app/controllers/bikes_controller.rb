@@ -1,6 +1,6 @@
 class BikesController < ApplicationController
-  skip_before_filter  :verify_authenticity_token
-  skip_before_filter  :ensure_authorized_user
+  skip_before_filter :verify_authenticity_token
+  skip_before_filter :ensure_authorized_user
   before_filter :verify_key
   respond_to :json
 
@@ -13,10 +13,10 @@ class BikesController < ApplicationController
   end
 
   private
+
   def verify_key
-    unless params[:key].present? && params[:key] == ENV['INCOMING_REQUEST_KEY']
+    unless params[:key].present? && params[:key] == ENV["INCOMING_REQUEST_KEY"]
       render json: "Not authorized", status: :unauthorized and return
     end
   end
-
 end
