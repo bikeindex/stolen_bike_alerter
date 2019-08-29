@@ -1,5 +1,5 @@
 require "spec_helper"
-describe TwitterAccountsController do
+describe TwitterAccountsController, type: :controller do
   describe "show" do
     context "with user" do
       before do
@@ -9,7 +9,7 @@ describe TwitterAccountsController do
       end
       it { should respond_with(:success) }
       it { should render_template(:show) }
-      it { should_not set_the_flash }
+      it { should_not set_flash }
     end
     context "with user" do
       before do
@@ -20,14 +20,14 @@ describe TwitterAccountsController do
       end
       it { should respond_with(:success) }
       it { should render_template(:show) }
-      it { should_not set_the_flash }
+      it { should_not set_flash }
     end
     context "no user" do
       before do
         get :show, id: "adsfasdfasdf"
       end
-      it { should redirect_to(omniauth_authorize_path("user", :twitter)) }
-      it { should_not set_the_flash }
+      it { should redirect_to(user_twitter_omniauth_authorize_path) }
+      it { should_not set_flash }
     end
   end
 
@@ -76,7 +76,7 @@ describe TwitterAccountsController do
       end
       it { should respond_with(:success) }
       it { should render_template(:index) }
-      it { should_not set_the_flash }
+      it { should_not set_flash }
     end
     context "with non-admin user" do
       before do
@@ -85,14 +85,14 @@ describe TwitterAccountsController do
         get :index
       end
       it { should redirect_to(twitter_account_path(id: @user.screen_name)) }
-      it { should_not set_the_flash }
+      it { should_not set_flash }
     end
     context "no user" do
       before do
         get :index
       end
-      it { should redirect_to(omniauth_authorize_path("user", :twitter)) }
-      it { should_not set_the_flash }
+      it { should redirect_to(user_twitter_omniauth_authorize_path) }
+      it { should_not set_flash }
     end
   end
 end

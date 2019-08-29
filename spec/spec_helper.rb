@@ -61,3 +61,10 @@ def set_omniauth_twitter(auth_hash = omniauth_twitter_fixture)
   @request.env["devise.mapping"] = Devise.mappings[:user]
   @request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:twitter]
 end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end

@@ -32,6 +32,7 @@ group :development, :test do
   gem "foreman"
   gem "rspec", "~> 3.7.0" # workaround from guard-rspec #236
   gem "rspec-rails", "~> 3.7.2"
+  gem "pry-rails"
 end
 
 group :test do

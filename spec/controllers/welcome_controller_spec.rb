@@ -7,7 +7,7 @@ describe WelcomeController do
       end
       it { should respond_with(:success) }
       it { should render_template(:index) }
-      it { should_not set_the_flash }
+      it { should_not set_flash }
     end
     context "with user" do
       before do
@@ -16,7 +16,7 @@ describe WelcomeController do
         get :index
       end
       it { should redirect_to(twitter_account_url(@user.screen_name)) }
-      it { should_not set_the_flash }
+      it { should_not set_flash }
     end
   end
 end
